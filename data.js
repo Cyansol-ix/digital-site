@@ -12,6 +12,12 @@ const PRODUCTS = {
             'REDMI K90 Max':      { processor:'天玑 9500 (3nm)', screen:'6.8" LTPO AMOLED', resolution:'3200×1440', refresh:'120Hz 自适应', camera:'5000万主摄+800万超广角+200万微距', front:'2000万', battery:'7000mAh', charge:'120W有线 / 50W无线', os:'Android 16 / HyperOS 3', storage:'256GB / 512GB / 1TB', ram:'12GB / 16GB', weight:'225g', waterproof:'IP68', biometric:'超声波屏下指纹+面部识别', material:'铝合金中框+玻璃后盖（内置散热风扇）', connectivity:'5G / WiFi 7 / 蓝牙5.4 / NFC / 红外', price:'¥2999' },
             '一加 13':            { processor:'骁龙 8 至尊版 (3nm)', screen:'6.82" LTPO AMOLED', resolution:'3168×1440', refresh:'120Hz 自适应', camera:'5000万哈苏主摄+5000万超广角+5000万3x长焦', front:'3200万', battery:'6000mAh', charge:'100W有线 / 50W无线', os:'Android 15 / ColorOS 15', storage:'256GB / 512GB / 1TB', ram:'12GB / 16GB / 24GB', weight:'213g', waterproof:'IP68+IP69', biometric:'超声波屏下指纹+面部', material:'铝合金中框+Gorilla Glass Victus 2', connectivity:'5G / WiFi 7 / 蓝牙5.4 / NFC / 红外', price:'¥4299' },
             'Galaxy S26 Ultra':   { processor:'骁龙 8 Elite (定制版) 八核 4.6GHz', screen:'6.9" Dynamic AMOLED 2X', resolution:'3120×1440 QHD+', refresh:'120Hz 自适应 (1-120Hz)', camera:'2亿主摄f/1.4+5000万超广角+5000万5x长焦+1000万3x长焦', front:'1200万 f/2.2', battery:'5000mAh', charge:'45W有线 / 15W无线', os:'Android 16 / One UI 8', storage:'256GB / 512GB / 1TB', ram:'12GB', weight:'218g', waterproof:'IP68', biometric:'超声波指纹+面部识别', material:'钛合金中框+Gorilla Armor 3', connectivity:'5G / WiFi 7 / 蓝牙5.4 / NFC / UWB / S Pen', price:'¥9999' },
+            'Samsung Galaxy S25 Ultra': { processor:'骁龙 8 Elite for Galaxy (3nm)', screen:'6.9" LTPO Dynamic AMOLED 2X', resolution:'3120×1440 QHD+', refresh:'120Hz 自适应 (1-120Hz)', camera:'2亿主摄f/1.7+5000万超广角+5000万5x长焦+1000万3x长焦', front:'1200万 f/2.2', battery:'5000mAh', charge:'45W有线 / 15W无线 / Qi2', os:'Android 15 / One UI 7', storage:'256GB / 512GB / 1TB', ram:'12GB', weight:'218g', waterproof:'IP68', biometric:'超声波屏下指纹+面部识别', material:'钛合金中框+Gorilla Armor 2', connectivity:'5G / WiFi 7 / 蓝牙5.4 / NFC / UWB / S Pen', price:'¥9999' },
+            '小米 17 Ultra':         { processor:'骁龙 8 Elite 2 (3nm)', screen:'6.9" LTPO AMOLED', resolution:'3200×1440 2K', refresh:'120Hz 自适应', camera:'5000万1英寸主摄+5000万超广角+5000万5x潜望长焦', front:'3200万', battery:'6000mAh', charge:'90W有线 / 50W无线', os:'Android 16 / HyperOS 3', storage:'256GB / 512GB / 1TB', ram:'12GB / 16GB', weight:'218g', waterproof:'IP68', biometric:'超声波屏下指纹+面部识别', material:'铝合金中框+龙晶玻璃+素皮后盖可选', connectivity:'5G / WiFi 7 / 蓝牙5.4 / NFC / UWB', price:'¥5999' },
+            '小米 15 Ultra':         { processor:'骁龙 8 Elite (3nm)', screen:'6.7" LTPO AMOLED', resolution:'3200×1440 2K', refresh:'120Hz 自适应', camera:'5000万1英寸主摄+5000万超广角+5000万5x潜望长焦', front:'3200万', battery:'5410mAh', charge:'90W有线 / 80W无线', os:'Android 15 / HyperOS 2', storage:'256GB / 512GB / 1TB', ram:'12GB / 16GB', weight:'226g', waterproof:'IP68+IP69', biometric:'超声波屏下指纹+面部识别', material:'铝合金中框+陶瓷/钛合金后盖', connectivity:'5G / WiFi 7 / 蓝牙5.4 / NFC / UWB / 卫星通信', price:'¥6499' },
+            'OPPO Find X8 Ultra':  { processor:'骁龙 8 Elite (3nm)', screen:'6.8" LTPO AMOLED', resolution:'2780×1264', refresh:'120Hz 自适应', camera:'5000万1英寸主摄+5000万超广角+5000万3x长焦+5000万6x潜望长焦', front:'3200万', battery:'6100mAh', charge:'100W有线 / 50W无线', os:'Android 15 / ColorOS 15', storage:'256GB / 512GB', ram:'12GB / 16GB', weight:'215g', waterproof:'IP68', biometric:'超声波屏下指纹+面部识别', material:'铝合金中框+Gorilla Glass', connectivity:'5G / WiFi 7 / 蓝牙5.4 / NFC', price:'¥6499' },
+            'vivo X200 Ultra':     { processor:'骁龙 8 Elite (3nm)', screen:'6.82" LTPO AMOLED', resolution:'2800×1260', refresh:'120Hz 自适应', camera:'5000万主摄+5000万超广角+2亿像素潜望长焦', front:'3200万', battery:'6000mAh', charge:'90W有线 / 30W无线', os:'Android 15 / OriginOS 5', storage:'256GB / 512GB / 1TB', ram:'12GB / 16GB', weight:'229g', waterproof:'IP68+IP69', biometric:'超声波屏下指纹+面部识别', material:'铝合金中框+素皮/玻璃后盖', connectivity:'5G / WiFi 7 / 蓝牙5.4 / NFC', price:'¥5999' },
+            '荣耀 Magic8 Pro':     { processor:'骁龙 8 Elite Gen 5 (3nm)', screen:'6.71" LTPO OLED', resolution:'2800×1264', refresh:'120Hz 自适应', camera:'2亿主摄+5000万超广角+5000万长焦', front:'5000万', battery:'7200mAh', charge:'120W有线 / 80W无线', os:'Android 16 / MagicOS 9', storage:'256GB / 512GB / 1TB', ram:'12GB / 16GB', weight:'219g', waterproof:'IP68', biometric:'超声波屏下指纹+面部识别', material:'铝合金中框+玻璃后盖', connectivity:'5G / WiFi 7 / 蓝牙5.4 / NFC / 红外', price:'¥4299' },
         },
         params: [
             ['处理器','processor'], ['屏幕','screen'], ['分辨率','resolution'], ['刷新率','refresh'],
@@ -26,7 +32,13 @@ const PRODUCTS = {
             '华为 Pura 90 Pro': '麒麟9030S回归+1英寸大底+星闪连接，鸿蒙生态旗舰。',
             'REDMI K90 Max': '天玑9500+内置散热风扇+7000mAh，2999元起的性能怪兽。游戏党首选。',
             '一加 13': '骁龙8至尊版全力释放，6000mAh+100W快充，哈苏影像，性能怪兽。',
-            'Galaxy S26 Ultra': '2026安卓机皇，2亿像素f/1.4超大光圈+S Pen，AI功能全面升级。'
+            'Galaxy S26 Ultra': '2026安卓机皇，2亿像素f/1.4超大光圈+S Pen，AI功能全面升级。',
+            'Samsung Galaxy S25 Ultra': '2025年2月发布，骁龙8 Elite+2亿像素+钛合金机身+S Pen。2025年安卓标杆。',
+            '小米 17 Ultra': '2025年12月发布，骁龙8 Elite 2+1英寸大底+5x潜望长焦+6000mAh。小米影像旗舰巅峰。',
+            '小米 15 Ultra': '2025年2月发布，骁龙8 Elite+1英寸大底+陶瓷/钛合金机身+卫星通信。小米年度影像标杆。',
+            'OPPO Find X8 Ultra': '2025年4月发布，四摄全焦段+骁龙8 Elite+6100mAh。DXOMARK 2025拍照第一。',
+            'vivo X200 Ultra': '2025年4月发布，2亿像素潜望长焦+骁龙8 Elite+6000mAh。蔡司影像旗舰。',
+            '荣耀 Magic8 Pro': '2026年1月发布，骁龙8 Elite Gen 5+7200mAh+2亿主摄。续航和性能双冠。'
         }
     },
     laptop: {
