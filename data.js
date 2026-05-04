@@ -1,17 +1,17 @@
 // ========== 极客老刘 - 产品数据库 ==========
 // 单一数据源：主页和详细对比页共用此文件
-// 更新时间：2026年5月5日
+// 更新时间：2026年5月6日
 
 const PRODUCTS = {
     phone: {
         label: '📱 手机',
         products: {
-            'iPhone 17 Pro':      { processor:'A19 Pro (3nm)', screen:'6.3" LTPO OLED', resolution:'2622×1206', refresh:'120Hz ProMotion 自适应', camera:'4800万主摄+4800万超广角+4800万5x长焦', front:'2400万', battery:'3988mAh', charge:'25W有线 / 25W MagSafe / Qi2无线', os:'iOS 19', storage:'256GB / 512GB / 1TB', ram:'12GB', weight:'206g', waterproof:'IP68', biometric:'Face ID', material:'铝合金一体机身+Ceramic Shield 2', connectivity:'5G / WiFi 7 / 蓝牙5.4 / NFC / UWB', price:'¥8999' },
-            'iPhone 16 Pro':      { processor:'A18 Pro (第二代3nm)', screen:'6.3" ProMotion OLED', resolution:'2622×1206', refresh:'120Hz 自适应', camera:'4800万主摄+4800万超广角+4800万5x长焦', front:'1200万', battery:'3577mAh', charge:'25W有线 / 25W MagSafe', os:'iOS 18', storage:'128GB / 256GB / 512GB / 1TB', ram:'8GB', weight:'199g', waterproof:'IP68', biometric:'Face ID', material:'5级钛合金中框+亚光玻璃', connectivity:'5G / WiFi 7 / 蓝牙5.3 / NFC / UWB', price:'¥7999' },
-            'Galaxy S26 Ultra':   { processor:'骁龙 8 Elite (定制版) 八核 4.6GHz', screen:'6.9" Dynamic AMOLED 2X', resolution:'3120×1440 QHD+', refresh:'120Hz 自适应 (1-120Hz)', camera:'2亿主摄f/1.4+5000万超广角+5000万5x长焦+1000万3x长焦', front:'1200万 f/2.2', battery:'5000mAh', charge:'45W有线 / 15W无线', os:'Android 16 / One UI 8', storage:'256GB / 512GB / 1TB', ram:'12GB', weight:'218g', waterproof:'IP68', biometric:'超声波指纹+面部识别', material:'钛合金中框+Gorilla Armor 3', connectivity:'5G / WiFi 7 / 蓝牙5.4 / NFC / UWB / S Pen', price:'¥9999' },
-            '华为 Pura 80 Pro':   { processor:'麒麟 9020 八核', screen:'6.8" LTPO OLED', resolution:'2848×1276', refresh:'120Hz 自适应 (1-120Hz)', camera:'5000万主摄1英寸+4800万4x长焦+4000万超广角', front:'1300万', battery:'5700mAh', charge:'100W有线 / 50W无线', os:'HarmonyOS 5 / EMUI 15', storage:'256GB / 512GB / 1TB', ram:'12GB / 16GB', weight:'210g', waterproof:'IP68', biometric:'屏下指纹+面部识别', material:'铝合金中框+昆仑玻璃', connectivity:'5G / WiFi 6E / 蓝牙5.4 / NFC / 红外', price:'¥6499' },
+            '小米 17 Pro Max':     { processor:'第五代骁龙 8 至尊版 (3nm)', screen:'6.9" LTPO AMOLED', resolution:'3200×1440', refresh:'120Hz 自适应', camera:'5000万徕卡光影大师主摄+5000万超广角+5000万5x长焦', front:'3200万', battery:'7000mAh', charge:'120W有线 / 50W无线', os:'Android 16 / HyperOS 3', storage:'256GB / 512GB / 1TB', ram:'12GB / 16GB', weight:'219g', waterproof:'IP68', biometric:'超声波屏下指纹+面部识别', material:'铝合金中框+龙晶玻璃', connectivity:'5G / WiFi 7 / 蓝牙5.4 / NFC / UWB', price:'¥5999' },
+            'iPhone 17 Pro':      { processor:'A19 Pro (3nm)', screen:'6.3" LTPO OLED', resolution:'2622×1206', refresh:'120Hz ProMotion 自适应', camera:'4800万主摄+4800万超广角+4800万5x长焦', front:'2400万', battery:'3988mAh', charge:'25W有线 / 25W MagSafe / Qi2无线', os:'iOS 19', storage:'256GB / 512GB / 1TB', ram:'12GB', weight:'206g', waterproof:'IP68', biometric:'Face ID', material:'铝合金一体机身+Ceramic Shield 2', connectivity:'5G / WiFi 7 / 蓝牙6 / NFC / UWB', price:'¥8999' },
+            '华为 Pura 90 Pro':   { processor:'麒麟 9030S 八核', screen:'6.8" LTPO OLED', resolution:'2848×1276', refresh:'120Hz 自适应 (1-120Hz)', camera:'5000万主摄1英寸+4800万4x长焦+4000万超广角', front:'1300万', battery:'5800mAh', charge:'100W有线 / 50W无线', os:'HarmonyOS 6 / EMUI 16', storage:'256GB / 512GB / 1TB', ram:'12GB / 16GB', weight:'212g', waterproof:'IP68', biometric:'屏下指纹+面部识别', material:'铝合金中框+昆仑玻璃', connectivity:'5G / WiFi 7 / 蓝牙5.4 / NFC / 红外 / 星闪', price:'¥5499' },
+            'REDMI K90 Max':      { processor:'天玑 9500 (3nm)', screen:'6.8" LTPO AMOLED', resolution:'3200×1440', refresh:'120Hz 自适应', camera:'5000万主摄+800万超广角+200万微距', front:'2000万', battery:'7000mAh', charge:'120W有线 / 50W无线', os:'Android 16 / HyperOS 3', storage:'256GB / 512GB / 1TB', ram:'12GB / 16GB', weight:'225g', waterproof:'IP68', biometric:'超声波屏下指纹+面部识别', material:'铝合金中框+玻璃后盖（内置散热风扇）', connectivity:'5G / WiFi 7 / 蓝牙5.4 / NFC / 红外', price:'¥2999' },
             '一加 13':            { processor:'骁龙 8 至尊版 (3nm)', screen:'6.82" LTPO AMOLED', resolution:'3168×1440', refresh:'120Hz 自适应', camera:'5000万哈苏主摄+5000万超广角+5000万3x长焦', front:'3200万', battery:'6000mAh', charge:'100W有线 / 50W无线', os:'Android 15 / ColorOS 15', storage:'256GB / 512GB / 1TB', ram:'12GB / 16GB / 24GB', weight:'213g', waterproof:'IP68+IP69', biometric:'超声波屏下指纹+面部', material:'铝合金中框+Gorilla Glass Victus 2', connectivity:'5G / WiFi 7 / 蓝牙5.4 / NFC / 红外', price:'¥4299' },
-            'OPPO Find X8 Ultra': { processor:'骁龙 8 至尊版 (3nm)', screen:'6.82" LTPO AMOLED', resolution:'3168×1440', refresh:'120Hz 自适应', camera:'5000万哈苏主摄+5000万超广角+5000万3x长焦+5000万6x长焦', front:'3200万', battery:'6100mAh', charge:'100W有线 / 50W无线', os:'Android 15 / ColorOS 15', storage:'256GB / 512GB / 1TB', ram:'16GB', weight:'215g', waterproof:'IP68+IP69', biometric:'超声波屏下指纹+面部', material:'铝合金中框+陶瓷后盖', connectivity:'5G / WiFi 7 / 蓝牙5.4 / NFC / 红外', price:'¥5999' }
+            'Galaxy S26 Ultra':   { processor:'骁龙 8 Elite (定制版) 八核 4.6GHz', screen:'6.9" Dynamic AMOLED 2X', resolution:'3120×1440 QHD+', refresh:'120Hz 自适应 (1-120Hz)', camera:'2亿主摄f/1.4+5000万超广角+5000万5x长焦+1000万3x长焦', front:'1200万 f/2.2', battery:'5000mAh', charge:'45W有线 / 15W无线', os:'Android 16 / One UI 8', storage:'256GB / 512GB / 1TB', ram:'12GB', weight:'218g', waterproof:'IP68', biometric:'超声波指纹+面部识别', material:'钛合金中框+Gorilla Armor 3', connectivity:'5G / WiFi 7 / 蓝牙5.4 / NFC / UWB / S Pen', price:'¥9999' },
         },
         params: [
             ['处理器','processor'], ['屏幕','screen'], ['分辨率','resolution'], ['刷新率','refresh'],
@@ -21,12 +21,12 @@ const PRODUCTS = {
             ['连接','connectivity'], ['重量','weight'], ['起售价','price']
         ],
         verdicts: {
-            'iPhone 17 Pro': 'A19 Pro芯片+铝合金一体化机身+VC散热，iPhone史上最大升级。视频创作首选。',
-            'iPhone 16 Pro': '上一代旗舰，A18 Pro依然强劲，降价后性价比更高。适合预算有限的iOS用户。',
-            'Galaxy S26 Ultra': '2026安卓机皇，2亿像素f/1.4超大光圈+S Pen，AI功能全面升级。',
-            '华为 Pura 80 Pro': '麒麟9020回归，1英寸大底+4x长焦，鸿蒙生态旗舰。',
+            '小米 17 Pro Max': '第五代骁龙8至尊版+徕卡光影大师+7000mAh，小米史上最全能旗舰。5999元起极具竞争力。',
+            'iPhone 17 Pro': 'A19 Pro芯片+铝合金一体化机身，苹果生态首选。视频创作和iOS用户首选。',
+            '华为 Pura 90 Pro': '麒麟9030S回归+1英寸大底+星闪连接，鸿蒙生态旗舰。',
+            'REDMI K90 Max': '天玑9500+内置散热风扇+7000mAh，2999元起的性能怪兽。游戏党首选。',
             '一加 13': '骁龙8至尊版全力释放，6000mAh+100W快充，哈苏影像，性能怪兽。',
-            'OPPO Find X8 Ultra': '哈苏四摄旗舰，6x长焦+6100mAh，影像能力顶级。'
+            'Galaxy S26 Ultra': '2026安卓机皇，2亿像素f/1.4超大光圈+S Pen，AI功能全面升级。'
         }
     },
     laptop: {
