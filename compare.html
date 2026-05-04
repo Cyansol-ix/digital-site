@@ -227,10 +227,14 @@ let selectedB = {};
 // ========== 初始化 ==========
 function init() {
     renderCategoryButtons();
-    // 读取URL参数，支持从主页跳转时保持分类
-    const urlCat = new URLSearchParams(window.location.search).get('cat');
+    // 读取URL参数
+    const params = new URLSearchParams(window.location.search);
+    const urlCat = params.get('cat');
+    const urlA = params.get('a');
+    const urlB = params.get('b');
     const validCats = Object.keys(PRODUCTS);
-    selectCategory(urlCat && validCats.includes(urlCat) ? urlCat : 'phone');
+    const cat = urlCat && validCats.includes(urlCat) ? urlCat : 'phone';
+    selectCategory(cat, urlA, urlB);
 }
 
 function renderCategoryButtons() {
@@ -240,17 +244,19 @@ function renderCategoryButtons() {
     ).join('');
 }
 
-function selectCategory(cat) {
+function selectCategory(cat, urlA, urlB) {
     currentCat = cat;
     // 更新按钮状态
     document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.category-btn').forEach(btn => {
         if (btn.textContent === PRODUCTS[cat].label) btn.classList.add('active');
     });
-    // 默认选前两个
+    // 选中机型：优先用URL参数，否则默认前两个
     const names = Object.keys(PRODUCTS[cat].products);
-    selectedA[cat] = names[0];
-    selectedB[cat] = names[1];
+    const validA = urlA && names.includes(urlA) ? urlA : null;
+    const validB = urlB && names.includes(urlB) ? urlB : null;
+    selectedA[cat] = validA || names[0];
+    selectedB[cat] = validB || names[1];
     renderCompare();
 }
 
