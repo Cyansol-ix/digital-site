@@ -726,6 +726,16 @@ function renderHomeCompare() {
     else verdictEl.textContent = `💡 ${names[selB.value]} 参数上更有优势 (${scoreB}:${scoreA})`;
 }
 
+// 更新对比链接
+function updateCompareLink() {
+    const names = Object.keys(homeDevices[currentCat].list);
+    const selA = document.getElementById('deviceA');
+    const selB = document.getElementById('deviceB');
+    const nameA = encodeURIComponent(names[selA.value]);
+    const nameB = encodeURIComponent(names[selB.value]);
+    document.getElementById('compareLink').href = `compare.html?cat=${currentCat}&a=${nameA}&b=${nameB}`;
+}
+
 // 分类切换
 document.querySelectorAll('.compare-tab').forEach(tab => {
     tab.addEventListener('click', () => {
@@ -743,16 +753,17 @@ document.querySelectorAll('.compare-tab').forEach(tab => {
         tab.style.color = '#0071e3';
         tab.style.fontWeight = '600';
         populateSelects();
-        document.getElementById('compareLink').href = 'compare.html?cat=' + currentCat;
+        updateCompareLink();
     });
 });
 
 // 下拉选择变化
-document.getElementById('deviceA').addEventListener('change', renderHomeCompare);
-document.getElementById('deviceB').addEventListener('change', renderHomeCompare);
+document.getElementById('deviceA').addEventListener('change', () => { renderHomeCompare(); updateCompareLink(); });
+document.getElementById('deviceB').addEventListener('change', () => { renderHomeCompare(); updateCompareLink(); });
 
 // 初始化
 populateSelects();
+updateCompareLink();
 
 // 滚动动画
 const observer = new IntersectionObserver(entries => {
