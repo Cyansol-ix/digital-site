@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电脑选购指南 - 极客老刘</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: #1d1d1f; background: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { text-decoration: none; color: inherit; }
+        
+        nav {
+            position: fixed; top: 0; width: 100%; height: 52px;
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center;
+            border-bottom: 0.5px solid rgba(0,0,0,0.08);
+        }
+        .nav-inner { max-width: 1200px; width: 100%; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-size: 20px; font-weight: 700; color: #1d1d1f; }
+        .nav-logo span { color: #0071e3; }
+        .nav-links { display: flex; gap: 36px; list-style: none; }
+        .nav-links a { font-size: 14px; font-weight: 500; color: #1d1d1f; opacity: 0.8; transition: opacity 0.2s; }
+        .nav-links a:hover { opacity: 1; }
+        .nav-links a.active { opacity: 1; color: #0071e3; }
+        
+        .breadcrumb {
+            padding: 72px 40px 20px;
+            max-width: 800px; margin: 0 auto;
+            font-size: 14px; color: #86868b;
+        }
+        .breadcrumb a { color: #0071e3; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        
+        .page-header {
+            padding: 20px 40px 60px;
+            max-width: 800px; margin: 0 auto;
+        }
+        .page-header h1 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 700; letter-spacing: -2px;
+            margin-bottom: 16px;
+        }
+        .page-header p {
+            font-size: 19px; color: #86868b;
+            line-height: 1.5;
+        }
+        
+        .article-content {
+            max-width: 800px; margin: 0 auto;
+            padding: 0 40px 100px;
+        }
+        
+        .guide-section {
+            margin-bottom: 60px;
+        }
+        
+        .guide-section h2 {
+            font-size: 28px; font-weight: 600;
+            margin-bottom: 20px; color: #1d1d1f;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #0071e3;
+            display: inline-block;
+        }
+        
+        .guide-section h3 {
+            font-size: 22px; font-weight: 600;
+            margin: 24px 0 12px; color: #1d1d1f;
+        }
+        
+        .guide-section p {
+            font-size: 17px; line-height: 1.8;
+            color: #333; margin-bottom: 16px;
+        }
+        
+        .param-card {
+            background: #f5f5f7;
+            border-radius: 16px;
+            padding: 28px;
+            margin: 20px 0;
+        }
+        
+        .param-card h4 {
+            font-size: 18px; font-weight: 600;
+            color: #0071e3; margin-bottom: 12px;
+        }
+        
+        .param-card p {
+            font-size: 15px; color: #6e6e73;
+            line-height: 1.6;
+        }
+        
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+        
+        .compare-table th {
+            background: #1d1d1f;
+            color: #fff;
+            padding: 16px 20px;
+            text-align: left;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        
+        .compare-table td {
+            padding: 14px 20px;
+            border-bottom: 1px solid #f0f0f2;
+            font-size: 15px;
+            color: #333;
+        }
+        
+        .compare-table tr:nth-child(even) {
+            background: #fbfbfd;
+        }
+        
+        .compare-table .highlight {
+            color: #0071e3;
+            font-weight: 600;
+        }
+        
+        .tip-box {
+            background: linear-gradient(135deg, #e8f4ff, #f0f8ff);
+            border-left: 4px solid #0071e3;
+            border-radius: 0 12px 12px 0;
+            padding: 20px 24px;
+            margin: 24px 0;
+        }
+        
+        .tip-box h4 {
+            font-size: 16px; font-weight: 600;
+            color: #0071e3; margin-bottom: 8px;
+        }
+        
+        .tip-box p {
+            font-size: 15px; color: #333;
+            margin-bottom: 0;
+        }
+        
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 24px;
+            background: #f5f5f7; color: #1d1d1f;
+            border-radius: 980px; font-size: 15px; font-weight: 500;
+            transition: all 0.3s; cursor: pointer;
+            margin: 0 40px 40px; max-width: 800px;
+        }
+        .back-btn:hover { background: #e8e8ed; }
+        
+        footer {
+            background: #1d1d1f; color: #86868b;
+            padding: 48px 40px 32px;
+        }
+        .footer-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 20px;
+        }
+        .footer-links { display: flex; gap: 32px; list-style: none; }
+        .footer-links a { font-size: 13px; color: #86868b; transition: color 0.2s; }
+        .footer-links a:hover { color: #f5f5f7; }
+        .footer-copy { font-size: 13px; }
+        
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .breadcrumb, .page-header, .article-content { padding-left: 20px; padding-right: 20px; }
+            .compare-table { font-size: 13px; }
+            .compare-table th, .compare-table td { padding: 10px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo">极客<span>老刘</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="phone.html">手机选购</a></li>
+            <li><a href="laptop.html" class="active">电脑选购</a></li>
+            <li><a href="accessories.html">配件选购</a></li>
+            <li><a href="smart-home.html">智能家居</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="breadcrumb">
+    <a href="index.html">首页</a> &gt; <span>电脑选购指南</span>
+</div>
+
+<div class="page-header">
+    <h1>💻 电脑选购指南</h1>
+    <p>轻薄本、游戏本、台式机、Mac……不同需求怎么选？这篇文章帮你搞清楚。</p>
+</div>
+
+<a href="index.html" class="back-btn">← 返回首页</a>
+
+<div class="article-content">
+    
+    <div class="guide-section">
+        <h2>一、先确定类型</h2>
+        <p>电脑主要分这几类，各有优缺点：</p>
+        
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th>类型</th>
+                    <th>优点</th>
+                    <th>缺点</th>
+                    <th>适合人群</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>轻薄本</td>
+                    <td>便携、续航长</td>
+                    <td>性能有限</td>
+                    <td>学生、办公、出差</td>
+                </tr>
+                <tr>
+                    <td>游戏本</td>
+                    <td>性能强、屏幕好</td>
+                    <td>重、续航短</td>
+                    <td>游戏玩家、创作者</td>
+                </tr>
+                <tr>
+                    <td>台式机</td>
+                    <td>性能最强、可升级</td>
+                    <td>不便携</td>
+                    <td>固定办公、重度使用</td>
+                </tr>
+                <tr>
+                    <td>Mac</td>
+                    <td>系统流畅、生态好</td>
+                    <td>价格高、游戏少</td>
+                    <td>设计师、开发者</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="guide-section">
+        <h2>二、核心硬件解析</h2>
+        
+        <h3>1. 处理器（CPU）</h3>
+        <p>处理器决定了电脑的运算能力。目前主流：</p>
+        
+        <div class="param-card">
+            <h4>Intel 阵营</h4>
+            <p>
+                <strong>Core Ultra 9</strong> — 旗舰性能，适合游戏和创作<br>
+                <strong>Core Ultra 7</strong> — 高性能均衡，性价比高<br>
+                <strong>Core Ultra 5</strong> — 主流选择，够用
+            </p>
+        </div>
+        
+        <div class="param-card">
+            <h4>AMD 阵营</h4>
+            <p>
+                <strong>锐龙 9 9950X</strong> — 多核性能强，适合多任务<br>
+                <strong>锐龙 7 9700X</strong> — 游戏性能好，功耗低<br>
+                <strong>锐龙 5 9600X</strong> — 性价比之选
+            </p>
+        </div>
+        
+        <div class="param-card">
+            <h4>苹果 M 系列</h4>
+            <p>
+                <strong>M4 Max</strong> — 专业创作，视频剪辑无压力<br>
+                <strong>M4 Pro</strong> — 高性能均衡，开发者首选<br>
+                <strong>M4</strong> — 轻薄本够用，续航超长
+            </p>
+        </div>
+        
+        <h3>2. 显卡（GPU）</h3>
+        <p>玩游戏、做设计、剪视频都需要好显卡：</p>
+        
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th>等级</th>
+                    <th>NVIDIA</th>
+                    <th>AMD</th>
+                    <th>适合场景</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>入门</td>
+                    <td>RTX 4050</td>
+                    <td>RX 7600</td>
+                    <td>网游、轻度创作</td>
+                </tr>
+                <tr>
+                    <td>中端</td>
+                    <td>RTX 4070</td>
+                    <td>RX 7800 XT</td>
+                    <td>3A 游戏、视频剪辑</td>
+                </tr>
+                <tr>
+                    <td>高端</td>
+                    <td class="highlight">RTX 5090</td>
+                    <td>RX 9070 XT</td>
+                    <td>4K 游戏、3D 渲染</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="tip-box">
+            <h4>关于显存</h4>
+            <p>2026 年，8GB 显存是入门，12GB 是主流，16GB 以上才适合 4K 游戏和专业创作。</p>
+        </div>
+        
+        <h3>3. 内存（RAM）</h3>
+        <p>内存影响多任务处理能力：</p>
+        
+        <div class="param-card">
+            <h4>内存容量建议</h4>
+            <p>
+                <strong>8GB</strong> — 勉强够用，不推荐<br>
+                <strong>16GB</strong> — 主流配置，日常够用<br>
+                <strong>32GB</strong> — 推荐配置，多任务无压力<br>
+                <strong>64GB+</strong> — 专业需求，视频剪辑、3D 渲染
+            </p>
+        </div>
+        
+        <h3>4. 硬盘（SSD）</h3>
+        <p>固态硬盘是必须的，机械硬盘已经淘汰：</p>
+        
+        <div class="param-card">
+            <h4>硬盘容量建议</h4>
+            <p>
+                <strong>256GB</strong> — 太小，不推荐<br>
+                <strong>512GB</strong> — 基本够用<br>
+                <strong>1TB</strong> — 推荐容量<br>
+                <strong>2TB+</strong> — 存储大量文件、游戏
+            </p>
+        </div>
+        
+        <div class="tip-box">
+            <h4>PCIe 4.0 vs 5.0</h4>
+            <p>PCIe 5.0 SSD 速度更快，但日常使用感知不明显。预算有限选 PCIe 4.0 就够了。</p>
+        </div>
+    </div>
+    
+    <div class="guide-section">
+        <h2>三、屏幕参数</h2>
+        <p>屏幕是你看最久的部分，很重要：</p>
+        
+        <div class="param-card">
+            <h4>分辨率</h4>
+            <p>
+                <strong>1080P</strong> — 入门，文字不够清晰<br>
+                <strong>2K (2560x1600)</strong> — 甜点分辨率，推荐<br>
+                <strong>4K (3840x2160)</strong> — 设计师首选
+            </p>
+        </div>
+        
+        <div class="param-card">
+            <h4>刷新率</h4>
+            <p>
+                <strong>60Hz</strong> — 办公够用<br>
+                <strong>120Hz</strong> — 流畅体验，推荐<br>
+                <strong>165Hz+</strong> — 游戏玩家
+            </p>
+        </div>
+        
+        <div class="param-card">
+            <h4>色域</h4>
+            <p>
+                <strong>45% NTSC</strong> — 入门，色彩差<br>
+                <strong>100% sRGB</strong> — 主流，够用<br>
+                <strong>100% DCI-P3</strong> — 设计师推荐
+            </p>
+        </div>
+    </div>
+    
+    <div class="guide-section">
+        <h2>四、不同预算推荐</h2>
+        
+        <div class="param-card">
+            <h4>💰 3000-5000 元（入门办公）</h4>
+            <p>适合学生、轻度办公。建议：R5 + 16GB + 512GB SSD。联想小新、RedmiBook 都不错。</p>
+        </div>
+        
+        <div class="param-card">
+            <h4>💰 5000-8000 元（主流配置）</h4>
+            <p>性价比最高的区间。R7/i7 + 16GB + 1TB + 2K 屏。ThinkBook、小新 Pro、华为 MateBook。</p>
+        </div>
+        
+        <div class="param-card">
+            <h4>💰 8000-12000 元（高性能）</h4>
+            <p>游戏本或创作本。RTX 4060+、32GB 内存。拯救者、天选、MacBook Air M4。</p>
+        </div>
+        
+        <div class="param-card">
+            <h4>💰 12000 元以上（旗舰）</h4>
+            <p>MacBook Pro、ROG 枪神、ThinkPad X1。适合专业创作、重度游戏。</p>
+        </div>
+    </div>
+    
+    <div class="guide-section">
+        <h2>五、常见误区</h2>
+        
+        <h3>❌ 误区1：i7 一定比 i5 好</h3>
+        <p>同代 i7 确实比 i5 强，但跨代不一定。14 代 i5 可能比 12 代 i7 更强。</p>
+        
+        <h3>❌ 误区2：游戏本不能办公</h3>
+        <p>游戏本性能更强，只是重一点。如果不在意重量，游戏本是更好的选择。</p>
+        
+        <h3>❌ 误区3：Mac 不能玩游戏</h3>
+        <p>M 系列芯片性能很强，很多游戏已经适配。只是游戏库比 Windows 少。</p>
+        
+        <h3>❌ 误区4：内存可以后期加</h3>
+        <p>现在很多轻薄本内存是焊死的，无法升级。买之前要想好需要多大内存。</p>
+    </div>
+    
+    <div class="guide-section">
+        <h2>六、总结</h2>
+        <p>选电脑最重要的是明确需求。办公选轻薄本，游戏选游戏本，创作选高性能本或 Mac。不要盲目追求高配置，够用就好。</p>
+        
+        <div class="tip-box">
+            <h4>🎯 最后建议</h4>
+            <p>买之前想清楚你主要用来做什么。如果只是办公、看视频，5000 元的轻薄本完全够用。</p>
+        </div>
+    </div>
+    
+</div>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-copy">© 2026 极客老刘 Geek Lao Liu. All rights reserved.</div>
+        <ul class="footer-links">
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">联系方式</a></li>
+            <li><a href="#">隐私政策</a></li>
+        </ul>
+    </div>
+</footer>
+
+</body>
+</html>

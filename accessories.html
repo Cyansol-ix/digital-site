@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>配件选购指南 - 极客老刘</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: #1d1d1f; background: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { text-decoration: none; color: inherit; }
+        
+        nav {
+            position: fixed; top: 0; width: 100%; height: 52px;
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center;
+            border-bottom: 0.5px solid rgba(0,0,0,0.08);
+        }
+        .nav-inner { max-width: 1200px; width: 100%; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-size: 20px; font-weight: 700; color: #1d1d1f; }
+        .nav-logo span { color: #0071e3; }
+        .nav-links { display: flex; gap: 36px; list-style: none; }
+        .nav-links a { font-size: 14px; font-weight: 500; color: #1d1d1f; opacity: 0.8; transition: opacity 0.2s; }
+        .nav-links a:hover { opacity: 1; }
+        .nav-links a.active { opacity: 1; color: #0071e3; }
+        
+        .breadcrumb {
+            padding: 72px 40px 20px;
+            max-width: 800px; margin: 0 auto;
+            font-size: 14px; color: #86868b;
+        }
+        .breadcrumb a { color: #0071e3; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        
+        .page-header {
+            padding: 20px 40px 60px;
+            max-width: 800px; margin: 0 auto;
+        }
+        .page-header h1 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 700; letter-spacing: -2px;
+            margin-bottom: 16px;
+        }
+        .page-header p {
+            font-size: 19px; color: #86868b;
+            line-height: 1.5;
+        }
+        
+        .article-content {
+            max-width: 800px; margin: 0 auto;
+            padding: 0 40px 100px;
+        }
+        
+        .guide-section {
+            margin-bottom: 60px;
+        }
+        
+        .guide-section h2 {
+            font-size: 28px; font-weight: 600;
+            margin-bottom: 20px; color: #1d1d1f;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #0071e3;
+            display: inline-block;
+        }
+        
+        .guide-section h3 {
+            font-size: 22px; font-weight: 600;
+            margin: 24px 0 12px; color: #1d1d1f;
+        }
+        
+        .guide-section p {
+            font-size: 17px; line-height: 1.8;
+            color: #333; margin-bottom: 16px;
+        }
+        
+        .param-card {
+            background: #f5f5f7;
+            border-radius: 16px;
+            padding: 28px;
+            margin: 20px 0;
+        }
+        
+        .param-card h4 {
+            font-size: 18px; font-weight: 600;
+            color: #0071e3; margin-bottom: 12px;
+        }
+        
+        .param-card p {
+            font-size: 15px; color: #6e6e73;
+            line-height: 1.6;
+        }
+        
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+        
+        .compare-table th {
+            background: #1d1d1f;
+            color: #fff;
+            padding: 16px 20px;
+            text-align: left;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        
+        .compare-table td {
+            padding: 14px 20px;
+            border-bottom: 1px solid #f0f0f2;
+            font-size: 15px;
+            color: #333;
+        }
+        
+        .compare-table tr:nth-child(even) {
+            background: #fbfbfd;
+        }
+        
+        .compare-table .highlight {
+            color: #0071e3;
+            font-weight: 600;
+        }
+        
+        .tip-box {
+            background: linear-gradient(135deg, #e8f4ff, #f0f8ff);
+            border-left: 4px solid #0071e3;
+            border-radius: 0 12px 12px 0;
+            padding: 20px 24px;
+            margin: 24px 0;
+        }
+        
+        .tip-box h4 {
+            font-size: 16px; font-weight: 600;
+            color: #0071e3; margin-bottom: 8px;
+        }
+        
+        .tip-box p {
+            font-size: 15px; color: #333;
+            margin-bottom: 0;
+        }
+        
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 24px;
+            background: #f5f5f7; color: #1d1d1f;
+            border-radius: 980px; font-size: 15px; font-weight: 500;
+            transition: all 0.3s; cursor: pointer;
+            margin: 0 40px 40px; max-width: 800px;
+        }
+        .back-btn:hover { background: #e8e8ed; }
+        
+        footer {
+            background: #1d1d1f; color: #86868b;
+            padding: 48px 40px 32px;
+        }
+        .footer-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 20px;
+        }
+        .footer-links { display: flex; gap: 32px; list-style: none; }
+        .footer-links a { font-size: 13px; color: #86868b; transition: color 0.2s; }
+        .footer-links a:hover { color: #f5f5f7; }
+        .footer-copy { font-size: 13px; }
+        
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .breadcrumb, .page-header, .article-content { padding-left: 20px; padding-right: 20px; }
+            .compare-table { font-size: 13px; }
+            .compare-table th, .compare-table td { padding: 10px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo">极客<span>老刘</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="phone.html">手机选购</a></li>
+            <li><a href="laptop.html">电脑选购</a></li>
+            <li><a href="accessories.html" class="active">配件选购</a></li>
+            <li><a href="smart-home.html">智能家居</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="breadcrumb">
+    <a href="index.html">首页</a> &gt; <span>配件选购指南</span>
+</div>
+
+<div class="page-header">
+    <h1>🎧 配件选购指南</h1>
+    <p>耳机、充电器、数据线、保护壳……这些小物件怎么选才不踩坑？</p>
+</div>
+
+<a href="index.html" class="back-btn">← 返回首页</a>
+
+<div class="article-content">
+    
+    <div class="guide-section">
+        <h2>一、耳机选购</h2>
+        <p>耳机是最常用的配件，选对了能大幅提升体验。</p>
+        
+        <h3>耳机类型对比</h3>
+        
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th>类型</th>
+                    <th>优点</th>
+                    <th>缺点</th>
+                    <th>适合场景</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>TWS 真无线</td>
+                    <td>便携、无束缚</td>
+                    <td>音质一般、易丢</td>
+                    <td>通勤、运动</td>
+                </tr>
+                <tr>
+                    <td>头戴式</td>
+                    <td>音质好、降噪强</td>
+                    <td>大、不便携</td>
+                    <td>居家、办公</td>
+                </tr>
+                <tr>
+                    <td>颈挂式</td>
+                    <td>不易丢、续航长</td>
+                    <td>有束缚感</td>
+                    <td>运动、长时间使用</td>
+                </tr>
+                <tr>
+                    <td>有线耳机</td>
+                    <td>无延迟、音质好</td>
+                    <td>有线束缚</td>
+                    <td>专业监听、游戏</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>降噪耳机怎么选？</h3>
+        
+        <div class="param-card">
+            <h4>降噪等级</h4>
+            <p>
+                <strong>入门降噪</strong> — 能过滤空调声、风扇声<br>
+                <strong>中端降噪</strong> — 能过滤地铁、飞机噪音<br>
+                <strong>旗舰降噪</strong> — 几乎完全隔绝外界声音
+            </p>
+        </div>
+        
+        <div class="tip-box">
+            <h4>关于降噪舒适度</h4>
+            <p>降噪太强会有「耳压感」，长时间佩戴不舒服。建议选有「自适应降噪」功能的耳机。</p>
+        </div>
+        
+        <h3>音质参数怎么看？</h3>
+        
+        <div class="param-card">
+            <h4>关键参数</h4>
+            <p>
+                <strong>频响范围</strong> — 20Hz-20kHz 是标准，范围越广越好<br>
+                <strong>阻抗</strong> — 越低越容易推，手机用选 32Ω 以下<br>
+                <strong>灵敏度</strong> — 越高越容易出声，100dB 以上够用
+            </p>
+        </div>
+    </div>
+    
+    <div class="guide-section">
+        <h2>二、充电器选购</h2>
+        <p>充电器选错了，轻则充电慢，重则损坏设备。</p>
+        
+        <h3>充电协议</h3>
+        
+        <div class="param-card">
+            <h4>常见协议</h4>
+            <p>
+                <strong>PD（Power Delivery）</strong> — 通用协议，苹果、安卓都支持<br>
+                <strong>QC（Quick Charge）</strong> — 高通协议，安卓主流<br>
+                <strong>PPS</strong> — PD 的增强版，支持更高功率<br>
+                <strong>私有协议</strong> — 各品牌自家协议，如 VOOC、SuperCharge
+            </p>
+        </div>
+        
+        <div class="tip-box">
+            <h4>重要提醒</h4>
+            <p>用非原装充电器时，确认支持你手机的快充协议。否则只能慢充。</p>
+        </div>
+        
+        <h3>充电器功率怎么选？</h3>
+        
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th>功率</th>
+                    <th>适合设备</th>
+                    <th>充电速度</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>20W</td>
+                    <td>iPhone、AirPods</td>
+                    <td>标准速度</td>
+                </tr>
+                <tr>
+                    <td>45W</td>
+                    <td>安卓手机、平板</td>
+                    <td>快充</td>
+                </tr>
+                <tr>
+                    <td>67W</td>
+                    <td>笔记本、平板</td>
+                    <td>快速充电</td>
+                </tr>
+                <tr>
+                    <td>100W+</td>
+                    <td>高性能笔记本</td>
+                    <td>极速充电</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h3>GaN 充电器是什么？</h3>
+        
+        <div class="param-card">
+            <h4>GaN（氮化镓）优势</h4>
+            <p>
+                <strong>更小</strong> — 同功率下体积更小<br>
+                <strong>更轻</strong> — 重量更轻，便于携带<br>
+                <strong>更高效</strong> — 转换效率高，发热少
+            </p>
+        </div>
+        
+        <div class="tip-box">
+            <h4>选购建议</h4>
+            <p>2026 年了，买充电器首选 GaN。价格差不多，体验好很多。</p>
+        </div>
+    </div>
+    
+    <div class="guide-section">
+        <h2>三、数据线选购</h2>
+        <p>数据线看起来简单，但选错了会影响充电速度和数据传输。</p>
+        
+        <h3>接口类型</h3>
+        
+        <div class="param-card">
+            <h4>常见接口</h4>
+            <p>
+                <strong>USB-C</strong> — 通用接口，推荐首选<br>
+                <strong>Lightning</strong> — 苹果旧接口，正在淘汰<br>
+                <strong>Micro USB</strong> — 老接口，基本淘汰
+            </p>
+        </div>
+        
+        <h3>数据线规格</h3>
+        
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th>规格</th>
+                    <th>充电功率</th>
+                    <th>数据传输</th>
+                    <th>价格</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>USB 2.0</td>
+                    <td>最高 100W</td>
+                    <td>480Mbps</td>
+                    <td>便宜</td>
+                </tr>
+                <tr>
+                    <td>USB 3.2</td>
+                    <td>最高 100W</td>
+                    <td>20Gbps</td>
+                    <td>中等</td>
+                </tr>
+                <tr>
+                    <td>USB4</td>
+                    <td>最高 240W</td>
+                    <td>40Gbps</td>
+                    <td>较贵</td>
+                </tr>
+                <tr>
+                    <td>Thunderbolt 4</td>
+                    <td>最高 100W</td>
+                    <td>40Gbps</td>
+                    <td>最贵</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="tip-box">
+            <h4>选购建议</h4>
+            <p>如果只是充电，USB 2.0 线就够了。如果需要传数据、外接显示器，选 USB4 或 Thunderbolt。</p>
+        </div>
+    </div>
+    
+    <div class="guide-section">
+        <h2>四、保护壳选购</h2>
+        <p>保护壳不只是防摔，还影响手感和散热。</p>
+        
+        <h3>材质对比</h3>
+        
+        <div class="param-card">
+            <h4>常见材质</h4>
+            <p>
+                <strong>硅胶</strong> — 柔软、防摔好，但容易发黄<br>
+                <strong>TPU</strong> — 轻薄、透明，但防护一般<br>
+                <strong>PC</strong> — 硬壳、耐磨，但缓冲差<br>
+                <strong>皮革</strong> — 质感好、商务，但价格高
+            </p>
+        </div>
+        
+        <div class="tip-box">
+            <h4>关于 MagSafe</h4>
+            <p>如果你用 iPhone，建议选 MagSafe 兼容的保护壳。无线充电更方便，还能搭配磁吸配件。</p>
+        </div>
+    </div>
+    
+    <div class="guide-section">
+        <h2>五、其他配件</h2>
+        
+        <h3>移动电源</h3>
+        
+        <div class="param-card">
+            <h4>容量选择</h4>
+            <p>
+                <strong>5000mAh</strong> — 应急用，轻便<br>
+                <strong>10000mAh</strong> — 主流选择，够用<br>
+                <strong>20000mAh</strong> — 长途旅行<br>
+                <strong>30000mAh+</strong> — 重度使用
+            </p>
+        </div>
+        
+        <h3>扩展坞</h3>
+        
+        <div class="param-card">
+            <h4>接口需求</h4>
+            <p>
+                <strong>USB-A</strong> — 接鼠标、U盘<br>
+                <strong>HDMI</strong> — 接显示器、投影仪<br>
+                <strong>SD 卡槽</strong> — 读取相机存储卡<br>
+                <strong>网口</strong> — 有线网络更稳定
+            </p>
+        </div>
+    </div>
+    
+    <div class="guide-section">
+        <h2>六、总结</h2>
+        <p>配件选对了能提升整体体验，选错了就是浪费钱。关键是根据自己的需求选择，不要盲目追求高配置。</p>
+        
+        <div class="tip-box">
+            <h4>🎯 最后建议</h4>
+            <p>买配件优先选大品牌，质量有保障。不要贪便宜买三无产品，安全第一。</p>
+        </div>
+    </div>
+    
+</div>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-copy">© 2026 极客老刘 Geek Lao Liu. All rights reserved.</div>
+        <ul class="footer-links">
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">联系方式</a></li>
+            <li><a href="#">隐私政策</a></li>
+        </ul>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPhone 17 Pro 深度体验 - 极客老刘</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: #1d1d1f; background: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { text-decoration: none; color: inherit; }
+        
+        nav {
+            position: fixed; top: 0; width: 100%; height: 52px;
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center;
+            border-bottom: 0.5px solid rgba(0,0,0,0.08);
+        }
+        .nav-inner { max-width: 1200px; width: 100%; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-size: 20px; font-weight: 700; color: #1d1d1f; }
+        .nav-logo span { color: #0071e3; }
+        .nav-links { display: flex; gap: 36px; list-style: none; }
+        .nav-links a { font-size: 14px; font-weight: 500; color: #1d1d1f; opacity: 0.8; transition: opacity 0.2s; }
+        .nav-links a:hover { opacity: 1; }
+        
+        /* 文章头部 */
+        .article-hero {
+            padding: 100px 40px 60px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: #fff;
+            text-align: center;
+        }
+        .article-hero h1 {
+            font-size: clamp(32px, 5vw, 52px);
+            font-weight: 700; letter-spacing: -1.5px;
+            margin-bottom: 20px; max-width: 800px; margin: 0 auto 20px;
+        }
+        .article-meta {
+            display: flex; justify-content: center; gap: 24px;
+            font-size: 15px; color: rgba(255,255,255,0.7);
+            margin-bottom: 20px;
+        }
+        .article-tag {
+            display: inline-block; padding: 6px 16px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 980px; font-size: 14px;
+        }
+        
+        /* 文章内容 */
+        .article-content {
+            max-width: 800px; margin: 0 auto;
+            padding: 60px 40px 100px;
+        }
+        
+        .article-content h2 {
+            font-size: 28px; font-weight: 600;
+            margin: 48px 0 20px; color: #1d1d1f;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #0071e3;
+            display: inline-block;
+        }
+        
+        .article-content h3 {
+            font-size: 22px; font-weight: 600;
+            margin: 32px 0 16px; color: #1d1d1f;
+        }
+        
+        .article-content p {
+            font-size: 18px; line-height: 1.9;
+            color: #333; margin-bottom: 20px;
+        }
+        
+        /* 评分卡片 */
+        .score-card {
+            background: #f5f5f7;
+            border-radius: 20px;
+            padding: 32px;
+            margin: 32px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 24px;
+            text-align: center;
+        }
+        .score-item {
+            padding: 16px;
+        }
+        .score-value {
+            font-size: 48px; font-weight: 700;
+            color: #0071e3; margin-bottom: 8px;
+        }
+        .score-label {
+            font-size: 14px; color: #86868b;
+        }
+        
+        /* 参数卡片 */
+        .spec-card {
+            background: #fbfbfd;
+            border-radius: 16px;
+            padding: 28px;
+            margin: 24px 0;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+        .spec-card h4 {
+            font-size: 18px; font-weight: 600;
+            color: #0071e3; margin-bottom: 16px;
+        }
+        .spec-list {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .spec-item {
+            display: flex; justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f2;
+            font-size: 15px;
+        }
+        .spec-item .label { color: #86868b; }
+        .spec-item .value { font-weight: 500; }
+        
+        /* 优缺点 */
+        .pros-cons {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 24px; margin: 32px 0;
+        }
+        .pros, .cons {
+            padding: 24px; border-radius: 16px;
+        }
+        .pros { background: #f0fff4; border: 1px solid #c6f6d5; }
+        .cons { background: #fff5f5; border: 1px solid #fed7d7; }
+        .pros h4, .cons h4 {
+            font-size: 18px; font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .pros h4 { color: #38a169; }
+        .cons h4 { color: #e53e3e; }
+        .pros li, .cons li {
+            font-size: 15px; line-height: 1.8;
+            margin-left: 16px; margin-bottom: 8px;
+        }
+        
+        /* 图片占位 */
+        .image-placeholder {
+            background: linear-gradient(135deg, #f5f5f7, #e8e8ed);
+            border-radius: 16px;
+            padding: 60px;
+            text-align: center;
+            margin: 32px 0;
+            font-size: 80px;
+        }
+        
+        /* 总结 */
+        .summary-box {
+            background: linear-gradient(135deg, #e8f4ff, #f0f8ff);
+            border-radius: 20px;
+            padding: 32px;
+            margin: 40px 0;
+        }
+        .summary-box h3 {
+            font-size: 24px; font-weight: 600;
+            color: #0071e3; margin-bottom: 16px;
+        }
+        .summary-box p {
+            font-size: 17px; line-height: 1.8;
+            color: #333; margin-bottom: 0;
+        }
+        
+        /* 返回按钮 */
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 24px;
+            background: #f5f5f7; color: #1d1d1f;
+            border-radius: 980px; font-size: 15px; font-weight: 500;
+            transition: all 0.3s; cursor: pointer;
+            margin: 40px 40px 40px; max-width: 800px;
+        }
+        .back-btn:hover { background: #e8e8ed; }
+        
+        footer {
+            background: #1d1d1f; color: #86868b;
+            padding: 48px 40px 32px;
+        }
+        .footer-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 20px;
+        }
+        .footer-links { display: flex; gap: 32px; list-style: none; }
+        .footer-links a { font-size: 13px; color: #86868b; transition: color 0.2s; }
+        .footer-links a:hover { color: #f5f5f7; }
+        .footer-copy { font-size: 13px; }
+        
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .article-hero { padding: 80px 20px 40px; }
+            .article-content { padding: 40px 20px 80px; }
+            .pros-cons { grid-template-columns: 1fr; }
+            .spec-list { grid-template-columns: 1fr; }
+            .score-card { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo">极客<span>老刘</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">首页</a></li>
+            <li><a href="phone.html">手机选购</a></li>
+            <li><a href="laptop.html">电脑选购</a></li>
+            <li><a href="accessories.html">配件选购</a></li>
+            <li><a href="smart-home.html">智能家居</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="article-hero">
+    <span class="article-tag">📱 深度评测</span>
+    <h1>iPhone 17 Pro 深度体验：影像升级到底值不值？</h1>
+    <div class="article-meta">
+        <span>2026年5月1日</span>
+        <span>阅读 8 分钟</span>
+        <span>作者：极客老刘</span>
+    </div>
+</div>
+
+<a href="index.html" class="back-btn">← 返回首页</a>
+
+<div class="article-content">
+    
+    <p>iPhone 17 Pro 发布已经两周了，这段时间我把它当作主力机使用，从日常拍照到专业视频录制，从游戏到办公，全方位体验了这台手机。今天就来分享一下真实感受。</p>
+    
+    <div class="score-card">
+        <div class="score-item">
+            <div class="score-value">9.2</div>
+            <div class="score-label">综合评分</div>
+        </div>
+        <div class="score-item">
+            <div class="score-value">9.5</div>
+            <div class="score-label">影像能力</div>
+        </div>
+        <div class="score-item">
+            <div class="score-value">8.8</div>
+            <div class="score-label">性能表现</div>
+        </div>
+        <div class="score-item">
+            <div class="score-value">8.5</div>
+            <div class="score-label">续航能力</div>
+        </div>
+    </div>
+    
+    <h2>一、外观设计</h2>
+    
+    <div class="image-placeholder">📱</div>
+    
+    <p>iPhone 17 Pro 延续了钛金属边框设计，但这次做了微弧处理，手感比上一代更好。背面采用了新的磨砂玻璃工艺，不沾指纹，摸起来很舒服。</p>
+    
+    <p>重量控制在 199g，比上一代轻了 5g。别小看这 5g，长时间握持确实能感受到差别。</p>
+    
+    <div class="spec-card">
+        <h4>外观参数</h4>
+        <div class="spec-list">
+            <div class="spec-item">
+                <span class="label">尺寸</span>
+                <span class="value">149.6 x 71.5 x 8.25 mm</span>
+            </div>
+            <div class="spec-item">
+                <span class="label">重量</span>
+                <span class="value">199g</span>
+            </div>
+            <div class="spec-item">
+                <span class="label">边框</span>
+                <span class="value">钛金属</span>
+            </div>
+            <div class="spec-item">
+                <span class="label">背面</span>
+                <span class="value">磨砂玻璃</span>
+            </div>
+        </div>
+    </div>
+    
+    <h2>二、屏幕表现</h2>
+    
+    <p>6.3 英寸 ProMotion 屏幕，支持 1-120Hz 自适应刷新率。这次的峰值亮度达到了 2500nit，户外阳光下看屏幕完全没问题。</p>
+    
+    <p>Always On Display 终于支持全屏显示了，不再只是时钟和通知。现在可以显示壁纸、小组件，实用性强了很多。</p>
+    
+    <h2>三、影像系统</h2>
+    
+    <p>这次升级最大的就是影像系统。主摄还是 4800 万像素，但传感器尺寸更大了，进光量提升了 20%。</p>
+    
+    <div class="image-placeholder">📸</div>
+    
+    <h3>日常拍照</h3>
+    <p>白天拍照没得说，色彩还原准确，细节丰富。HDR 算法有明显提升，高光压制和暗部提亮都更自然了。</p>
+    
+    <p>夜景模式进步很大，噪点控制更好，高光溢出减少。手持 2 秒也能拍出清晰的夜景照片。</p>
+    
+    <h3>视频录制</h3>
+    <p>这次支持 4K 120fps 杜比视界录制，文件很大但画质真的好。Action Mode 升级到 2.0，防抖效果更强了，跑步拍摄也很稳。</p>
+    
+    <p>新增的「电影效果」模式，可以拍出类似电影的浅景深效果，边缘抠图比上一代自然很多。</p>
+    
+    <div class="spec-card">
+        <h4>相机参数</h4>
+        <div class="spec-list">
+            <div class="spec-item">
+                <span class="label">主摄</span>
+                <span class="value">4800万 f/1.78</span>
+            </div>
+            <div class="spec-item">
+                <span class="label">超广角</span>
+                <span class="value">4800万 f/2.2</span>
+            </div>
+            <div class="spec-item">
+                <span class="label">长焦</span>
+                <span class="value">1200万 5x光学</span>
+            </div>
+            <div class="spec-item">
+                <span class="label">前置</span>
+                <span class="value">1200万 f/1.9</span>
+            </div>
+        </div>
+    </div>
+    
+    <h2>四、性能和续航</h2>
+    
+    <p>A19 Pro 芯片，3nm 工艺。跑分提升不大，但能效比提升明显。日常使用发热控制很好，玩游戏也不会烫手。</p>
+    
+    <p>续航方面，4685mAh 电池，中度使用一天没问题。如果重度使用，下午可能需要充一次电。支持 27W 有线快充和 25W MagSafe 无线充电。</p>
+    
+    <h2>五、iOS 20 系统</h2>
+    
+    <p>iOS 20 带来了一些新功能：</p>
+    <ul style="font-size:17px; line-height:2; color:#333; margin-left:20px; margin-bottom:20px;">
+        <li>全新的锁屏自定义，支持更多小组件</li>
+        <li>Siri 升级，支持更自然的对话</li>
+        <li>照片应用重构，AI 搜索更智能</li>
+        <li>隐私保护加强，App 跟踪更透明</li>
+    </ul>
+    
+    <h2>六、优缺点总结</h2>
+    
+    <div class="pros-cons">
+        <div class="pros">
+            <h4>✅ 优点</h4>
+            <ul>
+                <li>影像系统全面升级，夜景进步大</li>
+                <li>钛金属边框手感好，重量控制好</li>
+                <li>屏幕亮度高，户外可视性好</li>
+                <li>能效比提升，发热控制好</li>
+                <li>iOS 20 系统流畅稳定</li>
+            </ul>
+        </div>
+        <div class="cons">
+            <h4>❌ 缺点</h4>
+            <ul>
+                <li>充电速度还是不够快</li>
+                <li>电池容量偏小</li>
+                <li>价格依然很贵</li>
+                <li>创新不够，升级感不强</li>
+            </ul>
+        </div>
+    </div>
+    
+    <h2>七、购买建议</h2>
+    
+    <p>如果你是 iPhone 15 Pro 或更早的用户，这次升级值得考虑。影像系统的提升是实实在在的，日常使用体验也有明显进步。</p>
+    
+    <p>如果你是 iPhone 16 Pro 用户，除非你对影像有很高要求，否则没必要换。升级幅度不够大，性价比不高。</p>
+    
+    <div class="summary-box">
+        <h3>🎯 最终结论</h3>
+        <p>iPhone 17 Pro 是一台非常均衡的旗舰手机，影像系统是最大亮点。如果你追求最好的拍照体验，又习惯 iOS 生态，这台手机不会让你失望。但如果你在意性价比，可以考虑等降价或者选择安卓旗舰。</p>
+    </div>
+    
+</div>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-copy">© 2026 极客老刘 Geek Lao Liu. All rights reserved.</div>
+        <ul class="footer-links">
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">联系方式</a></li>
+            <li><a href="#">隐私政策</a></li>
+        </ul>
+    </div>
+</footer>
+
+</body>
+</html>

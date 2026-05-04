@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>极客老刘 — 探索科技之美</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif; background: #000; color: #fff; overflow-x: hidden; }
+
+        /* select 下拉框样式 */
+        select { background-color: #2a2a2a !important; color: #fff !important; border: 2px solid #666 !important; }
+        select option { background-color: #2a2a2a; color: #fff; padding: 8px; }
+        select:focus { border-color: #0071e3 !important; box-shadow: 0 0 0 3px rgba(0,113,227,0.3); }
+
+        .nav {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: #1d1d1f; background: #000;
+            -webkit-font-smoothing: antialiased; overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; }
+        nav {
+            position: fixed; top: 0; width: 100%; height: 52px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: saturate(180%) blur(20px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center;
+        }
+        .nav-inner { max-width: 1200px; width: 100%; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-size: 20px; font-weight: 700; color: #f5f5f7; }
+        .nav-logo span { color: #0071e3; }
+        .nav-links { display: flex; gap: 36px; list-style: none; }
+        .nav-links a { font-size: 14px; font-weight: 500; color: #f5f5f7; opacity: 0.8; transition: opacity 0.2s; }
+        .nav-links a:hover { opacity: 1; }
+        .nav-links a.active { opacity: 1; color: #0071e3; }
+        /* 汉堡菜单 */
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+        .hamburger span { width: 20px; height: 2px; background: #f5f5f7; transition: all 0.3s; }
+        .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        /* 移动菜单 */
+        .mobile-menu { display: none; position: fixed; top: 52px; left: 0; right: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); padding: 20px; z-index: 999; }
+        .mobile-menu.open { display: block; }
+        .mobile-menu a { display: block; padding: 14px 0; font-size: 17px; color: #f5f5f7; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .mobile-menu a:last-child { border-bottom: none; }
+        .mobile-menu a.active { color: #0071e3; }
+        .hero {
+            position: relative; width: 100%; height: 100vh;
+            background: #000; cursor: grab; overflow: hidden;
+        }
+        .hero:active { cursor: grabbing; }
+        #particleCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .hero-text {
+            position: absolute; bottom: 120px; left: 0; right: 0;
+            text-align: center; z-index: 10; pointer-events: none;
+        }
+        .hero-text h1 {
+            font-size: clamp(36px, 6vw, 72px); font-weight: 700;
+            color: #f5f5f7; letter-spacing: -2px;
+            opacity: 0; transform: translateY(30px);
+            animation: fadeUp 1s ease 1.5s forwards;
+        }
+        .hero-text p {
+            font-size: 18px; color: #86868b; margin-top: 12px;
+            opacity: 0; transform: translateY(20px);
+            animation: fadeUp 1s ease 1.8s forwards;
+        }
+        .hero-hint {
+            position: absolute; bottom: 40px; left: 0; right: 0;
+            text-align: center; z-index: 10;
+            font-size: 13px; color: #6e6e73;
+            opacity: 0; animation: fadeUp 1s ease 2.2s forwards;
+        }
+        @keyframes fadeUp { to{opacity:1;transform:translateY(0)} }
+        .categories { padding: 100px 40px; text-align: center; background: #fff; }
+        .section-label { font-size: 14px; font-weight: 600; color: #0071e3; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
+        .section-title { font-size: clamp(32px,5vw,56px); font-weight: 700; letter-spacing: -1.5px; color: #1d1d1f; margin-bottom: 16px; }
+        .section-subtitle { font-size: 19px; color: #86868b; max-width: 600px; margin: 0 auto 60px; line-height: 1.5; }
+        .category-grid { display: flex; flex-wrap: wrap; gap: 24px; max-width: 1200px; margin: 0 auto; justify-content: center; }
+        .category-card { background: #f5f5f7; border-radius: 20px; padding: 48px 32px; transition: all 0.4s cubic-bezier(0.25,0.46,0.45,0.94); cursor: pointer; border: 1px solid #e0e0e2; text-decoration: none; flex: 1 1 260px; max-width: 280px; }
+        .category-card:hover { transform: translateY(-8px); box-shadow: 0 24px 48px rgba(0,0,0,0.08); }
+        .category-icon { font-size: 56px; margin-bottom: 24px; display: block; }
+        .category-card h3 { font-size: 24px; font-weight: 600; margin-bottom: 12px; color: #1d1d1f; }
+        .category-card p { font-size: 15px; color: #86868b; line-height: 1.6; }
+        .reviews { padding: 100px 40px; background: #000; color: #f5f5f7; }
+        .reviews .section-label { color: #2997ff; }
+        .reviews .section-title { color: #f5f5f7; }
+        .reviews .section-subtitle { color: #86868b; }
+        .review-grid { display: flex; flex-wrap: wrap; gap: 32px; max-width: 1200px; margin: 0 auto; justify-content: center; }
+        .review-card { border-radius: 20px; overflow: hidden; background: #1d1d1f; transition: all 0.4s cubic-bezier(0.25,0.46,0.45,0.94); cursor: pointer; text-decoration: none; flex: 1 1 340px; max-width: 380px; }
+        .review-card:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 32px 64px rgba(0,0,0,0.4); }
+        .review-img { width: 100%; height: 240px; display: flex; align-items: center; justify-content: center; font-size: 72px; }
+        .review-content { padding: 28px; }
+        .review-tag { display: inline-block; padding: 4px 12px; background: rgba(0,113,227,0.15); color: #2997ff; border-radius: 980px; font-size: 12px; font-weight: 600; margin-bottom: 16px; }
+        .review-card h3 { font-size: 22px; font-weight: 600; margin-bottom: 12px; color: #f5f5f7; line-height: 1.3; }
+        .review-card p { font-size: 15px; color: #86868b; line-height: 1.6; }
+        .review-meta { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #6e6e73; }
+        .compare { padding: 100px 40px; text-align: center; background: #fff; }
+        .compare-table { max-width: 900px; margin: 0 auto; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.06); }
+        .compare-header { display: grid; grid-template-columns: 1fr 1fr 1fr; background: #fbfbfd; padding: 28px; border-bottom: 1px solid #e8e8ed; }
+        .compare-header span:first-child { text-align: left; font-weight: 600; }
+        .compare-header span { font-size: 17px; font-weight: 600; color: #1d1d1f; }
+        .compare-row { display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 20px 28px; border-bottom: 1px solid #f0f0f2; transition: background 0.2s; }
+        .compare-row:hover { background: #fbfbfd; }
+        .compare-row span:first-child { text-align: left; font-weight: 500; color: #1d1d1f; }
+        .compare-row span { font-size: 15px; color: #6e6e73; }
+        .compare-row .highlight { color: #0071e3; font-weight: 600; }
+        .cta-section { padding: 120px 40px; background: linear-gradient(180deg, #f5f5f7 0%, #fff 100%); text-align: center; }
+        .cta-section h2 { font-size: clamp(32px,5vw,56px); font-weight: 700; letter-spacing: -1.5px; margin-bottom: 20px; color: #1d1d1f; }
+        .cta-section p { font-size: 19px; color: #86868b; margin-bottom: 40px; }
+        .douyin-btn { display: inline-flex; align-items: center; gap: 12px; padding: 18px 48px; background: #1d1d1f; color: #fff; border-radius: 980px; font-size: 19px; font-weight: 500; transition: all 0.3s; cursor: pointer; }
+        .douyin-btn:hover { background: #333; transform: scale(1.04); }
+        footer { background: #1d1d1f; color: #86868b; padding: 48px 40px 32px; }
+        .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-links { display: flex; gap: 32px; list-style: none; }
+        .footer-links a { font-size: 13px; color: #86868b; transition: color 0.2s; }
+        .footer-links a:hover { color: #f5f5f7; }
+        .footer-copy { font-size: 13px; }
+        .fade-up { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25,0.46,0.45,0.94); }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .nav-inner { padding: 0 20px; }
+            .categories, .reviews, .compare, .cta-section { padding: 60px 20px; }
+            .review-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="nav-inner">
+        <div class="nav-logo">极客<span>老刘</span></div>
+        <ul class="nav-links">
+            <li><a href="#home">首页</a></li>
+            <li><a href="#categories">选购指南</a></li>
+            <li><a href="#reviews">评测</a></li>
+            <li><a href="#compare">对比</a></li>
+            <li><a href="#about">关注我</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="菜单">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+    <a href="#home">首页</a>
+    <a href="#categories">选购指南</a>
+    <a href="#reviews">评测</a>
+    <a href="#compare">对比</a>
+    <a href="#about">关注我</a>
+</div>
+
+<section class="hero" id="home">
+    <canvas id="particleCanvas"></canvas>
+    <div class="hero-text">
+        <h1>探索科技之美</h1>
+        <p>深度评测 · 真实体验 · 理性消费</p>
+    </div>
+    <div class="hero-hint">拖动鼠标 · 移动引力场</div>
+</section>
+
+<section class="categories" id="categories">
+    <div class="fade-up">
+        <div class="section-label">选购指南</div>
+        <h2 class="section-title">不知道买什么？看这里</h2>
+        <p class="section-subtitle">每一篇都是认真写的选购攻略，不恰饭、不忽悠，帮你把钱花在刀刃上。</p>
+    </div>
+    <div class="category-grid">
+        <a href="phone.html" class="category-card fade-up"><span class="category-icon">📱</span><h3>手机选购指南</h3><p>处理器怎么选、屏幕参数怎么看、哪些功能是噱头？一篇讲透，不踩坑。</p></a>
+        <a href="laptop.html" class="category-card fade-up"><span class="category-icon">💻</span><h3>电脑选购指南</h3><p>轻薄本还是性能本？Mac 还是 Windows？按需求给你最合适的推荐。</p></a>
+        <a href="accessories.html" class="category-card fade-up"><span class="category-icon">🎧</span><h3>配件选购指南</h3><p>耳机、充电器、数据线这些小东西最容易踩坑，选购前先看这篇。</p></a>
+        <a href="smart-home.html" class="category-card fade-up"><span class="category-icon">🏠</span><h3>智能家居入门</h3><p>想让家变聪明但不知从哪开始？从入门设备到全屋方案，一步步教你。</p></a>
+    </div>
+</section>
+
+<section class="reviews" id="reviews">
+    <div class="fade-up">
+        <div class="section-label">热门评测</div>
+        <h2 class="section-title">最新深度体验</h2>
+        <p class="section-subtitle">不吹不黑，用数据和体验说话。</p>
+    </div>
+    <div class="review-grid">
+        <a href="review-iphone17.html" class="review-card fade-up">
+            <div class="review-img" style="background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);">📱</div>
+            <div class="review-content">
+                <span class="review-tag">手机</span>
+                <h3>iPhone 17 Pro 深度体验：影像升级到底值不值？</h3>
+                <p>从日常拍照到专业视频录制，两周真实使用告诉你答案。</p>
+                <div class="review-meta"><span>2026年5月1日</span><span>阅读 8 分钟</span></div>
+            </div>
+        </a>
+        <a href="review-macbook-air-m4.html" class="review-card fade-up">
+            <div class="review-img" style="background:linear-gradient(135deg,#2d1b69,#11998e);">💻</div>
+            <div class="review-content">
+                <span class="review-tag">电脑</span>
+                <h3>MacBook Air M4 实测：轻薄本天花板又抬高了</h3>
+                <p>M4芯片带来多大提升？续航、性能、发热全面测试。</p>
+                <div class="review-meta"><span>2026年4月28日</span><span>阅读 12 分钟</span></div>
+            </div>
+        </a>
+        <a href="review-airpods-pro3.html" class="review-card fade-up">
+            <div class="review-img" style="background:linear-gradient(135deg,#c94b4b,#4b134f);">🎧</div>
+            <div class="review-content">
+                <span class="review-tag">配件</span>
+                <h3>AirPods Pro 3 降噪实测：地铁里也能安静听歌？</h3>
+                <p>新一代降噪芯片表现如何？对比前代和竞品。</p>
+                <div class="review-meta"><span>2026年4月25日</span><span>阅读 6 分钟</span></div>
+            </div>
+        </a>
+    </div>
+</section>
+
+<section class="compare" id="compare">
+    <div class="fade-up">
+        <div class="section-label">产品对比</div>
+        <h2 class="section-title">一目了然</h2>
+        <p class="section-subtitle">参数说话，帮你快速做决定。</p>
+    </div>
+    <!-- 对比分类选择 -->
+    <div class="compare-tabs" style="display:flex; justify-content:center; gap:10px; margin-bottom:24px; flex-wrap:wrap;">
+        <button class="compare-tab active" data-cat="phone" style="padding:10px 24px; border-radius:12px; border:2px solid #0071e3; background:rgba(0,113,227,0.15); color:#0071e3; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.3s;">📱 手机</button>
+        <button class="compare-tab" data-cat="laptop" style="padding:10px 24px; border-radius:12px; border:2px solid #666; background:#2a2a2a; color:#ddd; font-size:14px; font-weight:500; cursor:pointer; transition:all 0.3s;">💻 电脑</button>
+        <button class="compare-tab" data-cat="tablet" style="padding:10px 24px; border-radius:12px; border:2px solid #666; background:#2a2a2a; color:#ddd; font-size:14px; font-weight:500; cursor:pointer; transition:all 0.3s;">📱 平板</button>
+        <button class="compare-tab" data-cat="earphone" style="padding:10px 24px; border-radius:12px; border:2px solid #666; background:#2a2a2a; color:#ddd; font-size:14px; font-weight:500; cursor:pointer; transition:all 0.3s;">🎧 耳机</button>
+    </div>
+    <!-- 自定义机型选择器 -->
+    <div class="compare-selectors" style="display:flex; justify-content:center; align-items:center; gap:16px; margin-bottom:28px; flex-wrap:wrap;">
+        <select id="deviceA" style="padding:10px 20px; border-radius:12px; border:2px solid #666; background:#2a2a2a; color:#fff; font-size:15px; cursor:pointer; outline:none; min-width:180px; appearance:none; -webkit-appearance:none; background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 fill=%22white%22><path d=%22M6 8L1 3h10z%22/></svg>'); background-repeat:no-repeat; background-position:right 12px center;"></select>
+        <span style="color:rgba(255,255,255,0.5); font-size:20px; font-weight:300;">VS</span>
+        <select id="deviceB" style="padding:10px 20px; border-radius:12px; border:2px solid #666; background:#2a2a2a; color:#fff; font-size:15px; cursor:pointer; outline:none; min-width:180px; appearance:none; -webkit-appearance:none; background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 fill=%22white%22><path d=%22M6 8L1 3h10z%22/></svg>'); background-repeat:no-repeat; background-position:right 12px center;"></select>
+    </div>
+    <!-- 对比表格 -->
+    <div id="home-compare-table" class="compare-table fade-up"></div>
+    <p id="home-compare-verdict" style="text-align:center; margin:20px 0 8px; color:#86868b; font-size:15px;"></p>
+    <div style="text-align:center; margin-top:32px;">
+        <a href="compare.html" id="compareLink" class="btn-primary" style="display:inline-block; padding:14px 36px; background:#0071e3; color:#fff; border-radius:980px; font-size:17px; font-weight:500; transition:all 0.3s;">查看完整对比 →</a>
+    </div>
+</section>
+
+<section class="cta-section" id="about">
+    <div class="fade-up">
+        <h2>关注我的抖音</h2>
+        <p>更多数码好物视频，不定时更新</p>
+        <a href="https://v.douyin.com/iYIBTc6Gja0/" target="_blank" class="douyin-btn"><span>🎬</span> 关注我</a>
+        <p style="font-size:14px; color:#86868b; margin-top:16px;">数码科技 · 新品评测 · 好物推荐</p>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-copy">© 2026 极客老刘 Geek Lao Liu. All rights reserved.</div>
+        <ul class="footer-links">
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">联系方式</a></li>
+            <li><a href="#">隐私政策</a></li>
+        </ul>
+    </div>
+</footer>
+
+<script src="data.js"></script>
+<script>
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [], bgStars = [], time = 0;
+let mouse = { x: 0, y: 0, worldX: 0, worldY: 0, isDragging: false, startX: 0, startY: 0, active: false };
+let rotation = { x: 0, y: 0, targetX: 0, targetY: 0 };
+
+function resize() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    initBgStars();
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ====== 背景星空 ======
+function initBgStars() {
+    bgStars = [];
+    for (let i = 0; i < 180; i++) {
+        bgStars.push({
+            x: Math.random() * W, y: Math.random() * H,
+            size: Math.random() * 1.5 + 0.3,
+            speed: Math.random() * 0.2 + 0.05,
+            phase: Math.random() * Math.PI * 2,
+        });
+    }
+}
+
+function drawBackground() {
+    // 深色渐变
+    const bg = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, W*0.7);
+    bg.addColorStop(0, '#080818');
+    bg.addColorStop(0.5, '#040410');
+    bg.addColorStop(1, '#000005');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // 网格
+    ctx.strokeStyle = 'rgba(0,113,227,0.025)';
+    ctx.lineWidth = 0.5;
+    const gs = 100, ox = (time*15)%gs, oy = (time*10)%gs;
+    for (let x = -gs+ox; x < W+gs; x += gs) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for (let y = -gs+oy; y < H+gs; y += gs) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+    // 星空
+    bgStars.forEach(s => {
+        s.y -= s.speed;
+        if (s.y < -5) { s.y = H+5; s.x = Math.random()*W; }
+        const flicker = 0.4 + 0.6*Math.sin(time*3+s.phase);
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(160,200,255,${0.5*flicker})`;
+        ctx.fill();
+    });
+
+    // 中心光晕（跟随鼠标）
+    const glowX = mouse.active ? mouse.x : W/2;
+    const glowY = mouse.active ? mouse.y : H/2;
+    const pulse = 0.5 + 0.5*Math.sin(time*2);
+    const glow = ctx.createRadialGradient(glowX, glowY, 0, glowX, glowY, 400);
+    glow.addColorStop(0, `rgba(0,113,227,${0.12*pulse})`);
+    glow.addColorStop(0.4, `rgba(0,80,200,${0.04*pulse})`);
+    glow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, W, H);
+}
+
+// ====== 加载图片 ======
+const img = new Image();
+img.crossOrigin = 'anonymous';
+img.onload = () => {
+    const off = document.createElement('canvas');
+    const oc = off.getContext('2d');
+    const sz = 450;
+    off.width = sz;
+    off.height = sz * (img.height / img.width);
+    oc.drawImage(img, 0, 0, off.width, off.height);
+    generateParticles(oc.getImageData(0, 0, off.width, off.height));
+};
+img.onerror = () => {
+    // fallback
+    const off = document.createElement('canvas');
+    const oc = off.getContext('2d');
+    off.width = 300; off.height = 600;
+    oc.fillStyle = '#888';
+    oc.fillRect(40, 20, 220, 560);
+    oc.fillStyle = '#1a1a2e';
+    oc.fillRect(50, 50, 200, 500);
+    generateParticles(oc.getImageData(0, 0, 300, 600));
+};
+img.src = 'apple-ecosystem.jpg';
+
+// ====== 生成粒子 ======
+function generateParticles(imageData) {
+    particles = [];
+    const gap = 3, d = imageData.data, w = imageData.width, h = imageData.height;
+    const cx = w/2, cy = h/2;
+
+    for (let y = 0; y < h; y += gap) {
+        for (let x = 0; x < w; x += gap) {
+            const i = (y*w+x)*4;
+            const r = d[i], g = d[i+1], b = d[i+2], a = d[i+3];
+            if (a < 30) continue;
+
+            const brightness = (r*0.299+g*0.587+b*0.114)/255;
+            
+            // 边缘羽化：计算到图片边缘的距离
+            const edgeX = Math.min(x, w-1-x) / (w * 0.12); // 12%区域做羽化
+            const edgeY = Math.min(y, h-1-y) / (h * 0.12);
+            const edgeFade = Math.min(1, Math.min(edgeX, edgeY));
+            
+            const dx = (x-cx)/cx, dy = (y-cy)/cy;
+            const dist = Math.sqrt(dx*dx+dy*dy);
+            
+            // Z厚度
+            const zBright = brightness * 50 - 15;
+            const zEdge = Math.max(0, (dist-0.3)*30);
+            const originZ = zBright + zEdge + (Math.random()-0.5)*20;
+
+            const ox = (x-w/2)*2.2;
+            const oy = (y-h/2)*2.2;
+
+            particles.push({
+                // 原位
+                originX: ox, originY: oy, originZ: originZ,
+                // 初始位置：全部从中心开始
+                x: 0,
+                y: 0,
+                z: 0,
+                // 初始速度：向外扩散
+                vx: (Math.random()-0.5) * 8,
+                vy: (Math.random()-0.5) * 8,
+                vz: Math.random() * 4,
+                // 属性
+                color: [r, g, b],
+                size: (Math.random()*1.2 + 1.2) * (0.3 + edgeFade * 0.7),
+                edgeFade: edgeFade,
+                phase: Math.random()*Math.PI*2,
+                brightness,
+                mass: 0.5 + brightness * 0.5,
+                // 出现时间：逐渐出现
+                appearTime: Math.pow(Math.random(), 2) * 1500 + 300, // 先快后慢：大部分粒子早期出现
+                appeared: false,
+                // 引力轨道参数
+                orbitAngle: Math.random() * Math.PI * 2,
+                orbitSpeed: (Math.random()-0.5) * 0.02,
+                orbitRadius: Math.random() * 5 + 2,
+                // 状态
+                settled: false,
+                settleTime: Math.random() * 200 + 100,
+                age: 0,
+            });
+        }
+    }
+}
+
+// ====== 3D投影 ======
+function project(x, y, z, rx, ry) {
+    const cosY = Math.cos(ry), sinY = Math.sin(ry);
+    const x1 = x*cosY - z*sinY, z1 = x*sinY + z*cosY;
+    const cosX = Math.cos(rx), sinX = Math.sin(rx);
+    const y1 = y*cosX - z1*sinX, z2 = y*sinX + z1*cosX;
+    const fov = 900, scale = fov/(fov+z2+500);
+    return { x: x1*scale, y: y1*scale, scale, z: z2 };
+}
+
+// ====== 粒子物理系统 v2 ======
+const FRICTION = 0.93;      // 摩擦力
+const DRIFT = 0.008;        // 漂向原位的力
+const FLOW = 0.08;          // 流场强度
+const MOUSE_RADIUS = 100;   // 鼠标影响半径
+const MOUSE_STRENGTH = 0.4; // 鼠标排斥强度（降低）
+
+function updateParticle(p, t) {
+    // 1. 漂向原位（柔和，不是弹力）
+    p.vx += (p.originX - p.x) * DRIFT;
+    p.vy += (p.originY - p.y) * DRIFT;
+    p.vz += (p.originZ - p.z) * DRIFT;
+    
+    // 2. 流场（让粒子有流动感）
+    p.vx += Math.sin(p.y * 0.008 + t * 0.4) * FLOW;
+    p.vy += Math.cos(p.x * 0.008 + t * 0.35) * FLOW;
+    
+    // 3. 微小轨道
+    p.orbitAngle += p.orbitSpeed * 0.15;
+    p.vx += Math.cos(p.orbitAngle) * 0.03;
+    p.vy += Math.sin(p.orbitAngle) * 0.03;
+    
+    // 4. 鼠标排斥（用屏幕坐标计算，避免坐标系转换问题）
+    if (mouse.active) {
+        // 先把粒子原位转成屏幕坐标（简化版，假设无旋转）
+        const pScreenX = W/2 + p.originX * 0.65;  // 近似投影比例
+        const pScreenY = H/2 + p.originY * 0.65 - 20;
+        
+        const dx = mouse.x - pScreenX;
+        const dy = mouse.y - pScreenY;
+        const d = Math.sqrt(dx*dx + dy*dy);
+        
+        if (d < MOUSE_RADIUS * 2 && d > 0) {
+            // 排斥力：距离越近越强
+            const force = (1 - d / (MOUSE_RADIUS * 2)) * MOUSE_STRENGTH;
+            // 方向：粒子远离鼠标
+            p.vx -= (dx / d) * force;
+            p.vy -= (dy / d) * force;
+        }
+    }
+    
+    // 5. 限制粒子不能离原位太远（防止中心空洞）
+    const maxDist = 150;
+    const ox = p.x - p.originX;
+    const oy = p.y - p.originY;
+    const od = Math.sqrt(ox*ox + oy*oy);
+    if (od > maxDist) {
+        p.vx -= ox * 0.02;
+        p.vy -= oy * 0.02;
+    }
+    
+    // 5. 摩擦
+    p.vx *= FRICTION;
+    p.vy *= FRICTION;
+    p.vz *= FRICTION;
+    
+    // 6. 更新
+    p.x += p.vx;
+    p.y += p.vy;
+    p.z += p.vz;
+}
+
+// ====== 主循环 ======
+let startTime = Date.now();
+
+function animate() {
+    requestAnimationFrame(animate);
+    time += 0.01;
+    
+    // 计算已过去的时间（毫秒）
+    const elapsed = Date.now() - startTime;
+    
+    // 更新粒子出现状态
+    particles.forEach(p => {
+        if (!p.appeared && elapsed >= p.appearTime) {
+            p.appeared = true;
+        }
+    });
+
+    rotation.x += (rotation.targetX - rotation.x) * 0.06;
+    rotation.y += (rotation.targetY - rotation.y) * 0.06;
+
+    drawBackground();
+
+    // 更新粒子物理（只更新已出现的粒子）
+    particles.forEach(p => {
+        if (!p.appeared) return;
+        p.age++;
+        updateParticle(p, time);
+    });
+
+    // 按Z排序
+    const sorted = [...particles].sort((a, b) => {
+        return project(b.x, b.y, b.z, rotation.x, rotation.y).z - 
+               project(a.x, a.y, a.z, rotation.x, rotation.y).z;
+    });
+
+    // 绘制粒子
+    sorted.forEach(p => {
+        // 只绘制已出现的粒子
+        if (!p.appeared) return;
+        
+        const proj = project(p.x, p.y, p.z, rotation.x, rotation.y);
+        const drawX = W/2 + proj.x;
+        const drawY = H/2 + proj.y - 20;
+        const drawSize = p.size * proj.scale;
+
+        if (drawX < -20 || drawX > W+20 || drawY < -20 || drawY > H+20) return;
+
+        // 光照
+        const light = 0.6 + p.brightness*0.4 + Math.sin(rotation.y*2)*0.1;
+        const alpha = Math.min(proj.scale*2, 1) * Math.max(0.3, Math.min(1, light)) * p.edgeFade;
+
+        // 高亮光晕
+        if (p.brightness > 0.55 && drawSize > 1.3) {
+            ctx.beginPath();
+            ctx.arc(drawX, drawY, drawSize*3.5, 0, Math.PI*2);
+            ctx.fillStyle = `rgba(${p.color[0]},${p.color[1]},${p.color[2]},${alpha*0.08})`;
+            ctx.fill();
+        }
+
+        ctx.beginPath();
+        ctx.arc(drawX, drawY, drawSize, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(${p.color[0]},${p.color[1]},${p.color[2]},${alpha})`;
+        ctx.fill();
+    });
+
+    // 粒子连线
+    ctx.lineWidth = 0.3;
+    for (let i = 0; i < sorted.length; i += 6) {
+        const p1 = sorted[i];
+        // 只连线已出现的粒子
+        if (!p1.appeared) continue;
+        
+        const pr1 = project(p1.x, p1.y, p1.z, rotation.x, rotation.y);
+        const x1 = W/2+pr1.x, y1 = H/2+pr1.y-20;
+        
+        for (let j = i+1; j < Math.min(i+5, sorted.length); j++) {
+            const p2 = sorted[j];
+            // 只连线已出现的粒子
+            if (!p2.appeared) continue;
+            
+            const pr2 = project(p2.x, p2.y, p2.z, rotation.x, rotation.y);
+            const x2 = W/2+pr2.x, y2 = H/2+pr2.y-20;
+            const dist = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
+            
+            if (dist < 35) {
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.strokeStyle = `rgba(0,150,255,${0.12*(1-dist/35)})`;
+                ctx.stroke();
+            }
+        }
+    }
+
+    // 鼠标排斥场可视化
+    if (mouse.active) {
+        const pulse = 0.5 + 0.5*Math.sin(time*3);
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, MOUSE_RADIUS * 1.5, 0, Math.PI*2);
+        ctx.strokeStyle = `rgba(0,150,255,${0.1*pulse})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, MOUSE_RADIUS * 0.8, 0, Math.PI*2);
+        ctx.strokeStyle = `rgba(0,150,255,${0.15*pulse})`;
+        ctx.stroke();
+    }
+}
+
+// ====== 交互 ======
+const hero = document.querySelector('.hero');
+
+hero.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+    mouse.worldX = (mouse.x - W/2) / 2.2;
+    mouse.worldY = (mouse.y - H/2 + 20) / 2.2;
+    mouse.active = true;
+
+    if (mouse.isDragging) {
+        rotation.targetY = (e.clientX - mouse.startX) * 0.006;
+        rotation.targetX = -(e.clientY - mouse.startY) * 0.006;
+    }
+});
+
+hero.addEventListener('mousedown', e => {
+    mouse.isDragging = true;
+    mouse.startX = e.clientX;
+    mouse.startY = e.clientY;
+});
+
+hero.addEventListener('mouseup', () => {
+    mouse.isDragging = false;
+    rotation.targetX = 0;
+    rotation.targetY = 0;
+});
+
+hero.addEventListener('mouseleave', () => {
+    mouse.isDragging = false;
+    mouse.active = false;
+    rotation.targetX = 0;
+    rotation.targetY = 0;
+});
+
+// 触摸
+hero.addEventListener('touchstart', e => {
+    mouse.isDragging = true;
+    mouse.startX = e.touches[0].clientX;
+    mouse.startY = e.touches[0].clientY;
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.touches[0].clientX - rect.left;
+    mouse.y = e.touches[0].clientY - rect.top;
+    mouse.worldX = (mouse.x - W/2) / 2.2;
+    mouse.worldY = (mouse.y - H/2 + 20) / 2.2;
+    mouse.active = true;
+});
+
+hero.addEventListener('touchmove', e => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.touches[0].clientX - rect.left;
+    mouse.y = e.touches[0].clientY - rect.top;
+    mouse.worldX = (mouse.x - W/2) / 2.2;
+    mouse.worldY = (mouse.y - H/2 + 20) / 2.2;
+    if (mouse.isDragging) {
+        rotation.targetY = (e.touches[0].clientX - mouse.startX) * 0.006;
+        rotation.targetX = -(e.touches[0].clientY - mouse.startY) * 0.006;
+    }
+    e.preventDefault();
+}, { passive: false });
+
+hero.addEventListener('touchend', () => {
+    mouse.isDragging = false;
+    mouse.active = false;
+    rotation.targetX = 0;
+    rotation.targetY = 0;
+});
+
+// 启动
+initBgStars();
+animate();
+
+// homeDevices 现在从 data.js 共享数据文件自动生成（见 data.js 末尾的 getHomeDevices()）
+
+// 解析数值用于比较
+function parseNum(v) {
+    const m = v.match(/[\d.]+/);
+    return m ? parseFloat(m[0]) : null;
+}
+
+// 判断哪个更优（数字越大越好，除了重量和价格是越小越好）
+const lowerBetter = ['重量', '起售价'];
+function isBetter(a, b, param) {
+    const na = parseNum(a), nb = parseNum(b);
+    if (na === null || nb === null) return -1; // 无法比较
+    if (lowerBetter.some(p => param.includes(p))) return na < nb ? 0 : na > nb ? 1 : -1;
+    return na > nb ? 0 : na < nb ? 1 : -1;
+}
+
+let currentCat = 'phone';
+
+function populateSelects() {
+    const selA = document.getElementById('deviceA');
+    const selB = document.getElementById('deviceB');
+    const names = Object.keys(homeDevices[currentCat].list);
+    selA.innerHTML = names.map((n, i) => `<option value="${i}"${i===0?' selected':''}>${n}</option>`).join('');
+    selB.innerHTML = names.map((n, i) => `<option value="${i}"${i===1?' selected':''}>${n}</option>`).join('');
+    renderHomeCompare();
+}
+
+function renderHomeCompare() {
+    const selA = document.getElementById('deviceA');
+    const selB = document.getElementById('deviceB');
+    const names = Object.keys(homeDevices[currentCat].list);
+    const devA = homeDevices[currentCat].list[names[selA.value]];
+    const devB = homeDevices[currentCat].list[names[selB.value]];
+    const params = homeDevices[currentCat].params;
+    const table = document.getElementById('home-compare-table');
+    const verdictEl = document.getElementById('home-compare-verdict');
+
+    let html = `<div class="compare-header"><span>参数</span><span>${names[selA.value]}</span><span>${names[selB.value]}</span></div>`;
+    let scoreA = 0, scoreB = 0;
+    params.forEach((p, i) => {
+        const winner = isBetter(devA[i], devB[i], p);
+        if (winner === 0) scoreA++;
+        if (winner === 1) scoreB++;
+        const h0 = winner === 0 ? ' class="highlight"' : '';
+        const h1 = winner === 1 ? ' class="highlight"' : '';
+        html += `<div class="compare-row"><span>${p}</span><span${h0}>${devA[i]}</span><span${h1}>${devB[i]}</span></div>`;
+    });
+    table.innerHTML = html;
+
+    if (scoreA === scoreB) verdictEl.textContent = '💡 两款各有千秋，看你的实际需求。';
+    else if (scoreA > scoreB) verdictEl.textContent = `💡 ${names[selA.value]} 参数上更有优势 (${scoreA}:${scoreB})`;
+    else verdictEl.textContent = `💡 ${names[selB.value]} 参数上更有优势 (${scoreB}:${scoreA})`;
+}
+
+// 分类切换
+document.querySelectorAll('.compare-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        currentCat = tab.dataset.cat;
+        document.querySelectorAll('.compare-tab').forEach(t => {
+            t.classList.remove('active');
+            t.style.background = '#2a2a2a';
+            t.style.borderColor = '#666';
+            t.style.color = '#ddd';
+            t.style.fontWeight = '500';
+        });
+        tab.classList.add('active');
+        tab.style.background = 'rgba(0,113,227,0.15)';
+        tab.style.borderColor = '#0071e3';
+        tab.style.color = '#0071e3';
+        tab.style.fontWeight = '600';
+        populateSelects();
+        document.getElementById('compareLink').href = 'compare.html?cat=' + currentCat;
+    });
+});
+
+// 下拉选择变化
+document.getElementById('deviceA').addEventListener('change', renderHomeCompare);
+document.getElementById('deviceB').addEventListener('change', renderHomeCompare);
+
+// 初始化
+populateSelects();
+
+// 滚动动画
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// 汉堡菜单
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+});
+// 点击菜单项关闭
+mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+    });
+});
+
+// 导航高亮：滚动时高亮当前section
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a, .mobile-menu a');
+function highlightNav() {
+    let current = '';
+    sections.forEach(sec => {
+        const top = sec.offsetTop - 100;
+        if (window.scrollY >= top) current = sec.id;
+    });
+    navLinks.forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+    });
+}
+window.addEventListener('scroll', highlightNav);
+highlightNav();
+</script>
+
+</body>
+</html>

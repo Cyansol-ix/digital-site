@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手机选购指南 - 极客老刘</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: #1d1d1f; background: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { text-decoration: none; color: inherit; }
+        
+        nav {
+            position: fixed; top: 0; width: 100%; height: 52px;
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center;
+            border-bottom: 0.5px solid rgba(0,0,0,0.08);
+        }
+        .nav-inner { max-width: 1200px; width: 100%; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-size: 20px; font-weight: 700; color: #1d1d1f; }
+        .nav-logo span { color: #0071e3; }
+        .nav-links { display: flex; gap: 36px; list-style: none; }
+        .nav-links a { font-size: 14px; font-weight: 500; color: #1d1d1f; opacity: 0.8; transition: opacity 0.2s; }
+        .nav-links a:hover { opacity: 1; }
+        .nav-links a.active { opacity: 1; color: #0071e3; }
+        
+        .breadcrumb {
+            padding: 72px 40px 20px;
+            max-width: 800px; margin: 0 auto;
+            font-size: 14px; color: #86868b;
+        }
+        .breadcrumb a { color: #0071e3; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        
+        .page-header {
+            padding: 20px 40px 60px;
+            max-width: 800px; margin: 0 auto;
+        }
+        .page-header h1 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 700; letter-spacing: -2px;
+            margin-bottom: 16px;
+        }
+        .page-header p {
+            font-size: 19px; color: #86868b;
+            line-height: 1.5;
+        }
+        
+        /* 文章内容 */
+        .article-content {
+            max-width: 800px; margin: 0 auto;
+            padding: 0 40px 100px;
+        }
+        
+        .guide-section {
+            margin-bottom: 60px;
+        }
+        
+        .guide-section h2 {
+            font-size: 28px; font-weight: 600;
+            margin-bottom: 20px; color: #1d1d1f;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #0071e3;
+            display: inline-block;
+        }
+        
+        .guide-section h3 {
+            font-size: 22px; font-weight: 600;
+            margin: 24px 0 12px; color: #1d1d1f;
+        }
+        
+        .guide-section p {
+            font-size: 17px; line-height: 1.8;
+            color: #333; margin-bottom: 16px;
+        }
+        
+        /* 参数卡片 */
+        .param-card {
+            background: #f5f5f7;
+            border-radius: 16px;
+            padding: 28px;
+            margin: 20px 0;
+        }
+        
+        .param-card h4 {
+            font-size: 18px; font-weight: 600;
+            color: #0071e3; margin-bottom: 12px;
+        }
+        
+        .param-card p {
+            font-size: 15px; color: #6e6e73;
+            line-height: 1.6;
+        }
+        
+        /* 对比表格 */
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+        
+        .compare-table th {
+            background: #1d1d1f;
+            color: #fff;
+            padding: 16px 20px;
+            text-align: left;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        
+        .compare-table td {
+            padding: 14px 20px;
+            border-bottom: 1px solid #f0f0f2;
+            font-size: 15px;
+            color: #333;
+        }
+        
+        .compare-table tr:nth-child(even) {
+            background: #fbfbfd;
+        }
+        
+        .compare-table .highlight {
+            color: #0071e3;
+            font-weight: 600;
+        }
+        
+        /* 提示框 */
+        .tip-box {
+            background: linear-gradient(135deg, #e8f4ff, #f0f8ff);
+            border-left: 4px solid #0071e3;
+            border-radius: 0 12px 12px 0;
+            padding: 20px 24px;
+            margin: 24px 0;
+        }
+        
+        .tip-box h4 {
+            font-size: 16px; font-weight: 600;
+            color: #0071e3; margin-bottom: 8px;
+        }
+        
+        .tip-box p {
+            font-size: 15px; color: #333;
+            margin-bottom: 0;
+        }
+        
+        /* 返回按钮 */
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 24px;
+            background: #f5f5f7; color: #1d1d1f;
+            border-radius: 980px; font-size: 15px; font-weight: 500;
+            transition: all 0.3s; cursor: pointer;
+            margin: 0 40px 40px; max-width: 800px;
+        }
+        .back-btn:hover { background: #e8e8ed; }
+        
+        footer {
+            background: #1d1d1f; color: #86868b;
+            padding: 48px 40px 32px;
+        }
+        .footer-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 20px;
+        }
+        .footer-links { display: flex; gap: 32px; list-style: none; }
+        .footer-links a { font-size: 13px; color: #86868b; transition: color 0.2s; }
+        .footer-links a:hover { color: #f5f5f7; }
+        .footer-copy { font-size: 13px; }
+        
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .breadcrumb, .page-header, .article-content { padding-left: 20px; padding-right: 20px; }
+            .compare-table { font-size: 13px; }
+            .compare-table th, .compare-table td { padding: 10px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo">极客<span>老刘</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="phone.html" class="active">手机选购</a></li>
+            <li><a href="laptop.html">电脑选购</a></li>
+            <li><a href="accessories.html">配件选购</a></li>
+            <li><a href="smart-home.html">智能家居</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="breadcrumb">
+    <a href="index.html">首页</a> &gt; <span>手机选购指南</span>
+</div>
+
+<div class="page-header">
+    <h1>📱 手机选购指南</h1>
+    <p>处理器、屏幕、相机、续航……这些参数到底怎么看？这篇文章帮你理清思路，选到最适合自己的手机。</p>
+</div>
+
+<a href="index.html" class="back-btn">← 返回首页</a>
+
+<div class="article-content">
+    
+    <div class="guide-section">
+        <h2>一、明确你的需求</h2>
+        <p>选手机之前，先问自己几个问题：</p>
+        <ul style="font-size:17px; line-height:2; color:#333; margin-left:20px; margin-bottom:20px;">
+            <li>你主要用手机做什么？（拍照、游戏、办公、日常使用）</li>
+            <li>你的预算大概是多少？</li>
+            <li>你在意续航还是轻薄？</li>
+            <li>你习惯 iOS 还是 Android？</li>
+        </ul>
+        
+        <div class="tip-box">
+            <h4>💡 小贴士</h4>
+            <p>不要盲目追求旗舰，中端机往往能满足 80% 的日常需求，性价比更高。</p>
+        </div>
+    </div>
+    
+    <div class="guide-section">
+        <h2>二、核心参数解析</h2>
+        
+        <h3>1. 处理器（CPU/SoC）</h3>
+        <p>处理器是手机的大脑，决定了流畅度和功耗。目前主流的旗舰芯片：</p>
+        
+        <div class="param-card">
+            <h4>2026年主流芯片</h4>
+            <p>
+                <strong>苹果 A19 Pro</strong> — 能效比领先，iOS 优化好<br>
+                <strong>高通骁龙 8 Gen 4</strong> — Android 阵营最强，GPU 性能突出<br>
+                <strong>联发科天玑 9400</strong> — 性价比之选，功耗控制优秀<br>
+                <strong>华为麒麟 9100</strong> — 自主架构，鸿蒙生态
+            </p>
+        </div>
+        
+        <div class="tip-box">
+            <h4>怎么看芯片性能？</h4>
+            <p>看跑分不如看实际体验。GeekBench 跑分高不代表日常流畅，GPU 跑分高不代表游戏不发热。建议看真实用户评测。</p>
+        </div>
+        
+        <h3>2. 屏幕</h3>
+        <p>屏幕是你每天看最久的部分，重要性不亚于处理器。</p>
+        
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th>参数</th>
+                    <th>入门</th>
+                    <th>中端</th>
+                    <th>旗舰</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>材质</td>
+                    <td>LCD</td>
+                    <td>OLED</td>
+                    <td class="highlight">LTPO OLED</td>
+                </tr>
+                <tr>
+                    <td>刷新率</td>
+                    <td>60Hz</td>
+                    <td>90-120Hz</td>
+                    <td class="highlight">1-120Hz 自适应</td>
+                </tr>
+                <tr>
+                    <td>分辨率</td>
+                    <td>1080P</td>
+                    <td>1.5K</td>
+                    <td class="highlight">2K+</td>
+                </tr>
+                <tr>
+                    <td>亮度</td>
+                    <td>600nit</td>
+                    <td>1000nit</td>
+                    <td class="highlight">2000nit+</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="tip-box">
+            <h4>关于高频 PWM 调光</h4>
+            <p>如果你对频闪敏感，选择支持 1920Hz 以上高频 PWM 调光的 OLED 屏幕，或者 DC 调光的 LCD 屏幕。</p>
+        </div>
+        
+        <h3>3. 相机</h3>
+        <p>像素高 ≠ 拍照好。影响拍照质量的因素：</p>
+        
+        <div class="param-card">
+            <h4>传感器尺寸</h4>
+            <p>底大一级压死人。1/1.3 英寸 > 1/1.56 英寸 > 1/2 英寸。大底进光量多，暗光表现好。</p>
+        </div>
+        
+        <div class="param-card">
+            <h4>光学防抖（OIS）</h4>
+            <p>手持拍照必备。没有 OIS 的手机，夜景基本没法看。</p>
+        </div>
+        
+        <div class="param-card">
+            <h4>算法优化</h4>
+            <p>苹果、谷歌的算法调教明显领先。同样的硬件，算法好的手机拍照更自然、色彩更准。</p>
+        </div>
+        
+        <h3>4. 续航和充电</h3>
+        <p>电池容量和充电速度需要平衡：</p>
+        
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th>类型</th>
+                    <th>电池</th>
+                    <th>充电</th>
+                    <th>特点</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>轻薄机</td>
+                    <td>4000-4500mAh</td>
+                    <td>30-67W</td>
+                    <td>手感好，续航一般</td>
+                </tr>
+                <tr>
+                    <td>均衡机</td>
+                    <td>4800-5200mAh</td>
+                    <td>67-100W</td>
+                    <td>续航和手感平衡</td>
+                </tr>
+                <tr>
+                    <td>续航机</td>
+                    <td>5500-6000mAh</td>
+                    <td>100-150W</td>
+                    <td>续航强，机身偏重</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="guide-section">
+        <h2>三、不同预算推荐</h2>
+        
+        <div class="param-card">
+            <h4>💰 1000-2000 元（入门）</h4>
+            <p>适合学生、老人、备用机。关注：续航、屏幕护眼、系统流畅度。建议选择骁龙 7 系或天玑 8000 系芯片。</p>
+        </div>
+        
+        <div class="param-card">
+            <h4>💰 2000-4000 元（中端主力）</h4>
+            <p>性价比最高的区间。能拿到旗舰芯片、不错的屏幕和相机。推荐 Redmi K 系列、iQOO Neo 系列。</p>
+        </div>
+        
+        <div class="param-card">
+            <h4>💰 4000-6000 元（次旗舰）</h4>
+            <p>各方面都很均衡，影像能力突出。适合对拍照有要求的用户。推荐 vivo X 系列、OPPO Find 系列。</p>
+        </div>
+        
+        <div class="param-card">
+            <h4>💰 6000 元以上（旗舰）</h4>
+            <p>追求极致体验。iPhone、三星 S 系列、华为 Mate 系列。适合预算充足、追求品牌和生态的用户。</p>
+        </div>
+    </div>
+    
+    <div class="guide-section">
+        <h2>四、常见误区</h2>
+        
+        <h3>❌ 误区1：像素越高拍照越好</h3>
+        <p>2 亿像素不一定比 5000 万像素好。传感器尺寸、算法优化更重要。</p>
+        
+        <h3>❌ 误区2：运存越大越流畅</h3>
+        <p>12GB 运存够用了。系统优化和后台管理策略更影响流畅度。</p>
+        
+        <h3>❌ 误区3：跑分高性能就好</h3>
+        <p>跑分只能参考，实际体验才是王道。建议看长时间使用的稳定性评测。</p>
+        
+        <h3>❌ 误区4：充电越快越好</h3>
+        <p>超过 100W 的充电速度提升不明显，但会增加电池损耗。67-100W 是甜蜜点。</p>
+    </div>
+    
+    <div class="guide-section">
+        <h2>五、总结</h2>
+        <p>选手机没有绝对的好坏，只有适不适合。明确自己的需求和预算，不要被营销话术带偏，才能选到满意的手机。</p>
+        
+        <div class="tip-box">
+            <h4>🎯 最后建议</h4>
+            <p>买之前去实体店摸一摸真机，手感、重量、屏幕观感，这些参数表上看不出来。</p>
+        </div>
+    </div>
+    
+</div>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-copy">© 2026 极客老刘 Geek Lao Liu. All rights reserved.</div>
+        <ul class="footer-links">
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">联系方式</a></li>
+            <li><a href="#">隐私政策</a></li>
+        </ul>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能家居入门指南 - 极客老刘</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: #1d1d1f; background: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { text-decoration: none; color: inherit; }
+        
+        nav {
+            position: fixed; top: 0; width: 100%; height: 52px;
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center;
+            border-bottom: 0.5px solid rgba(0,0,0,0.08);
+        }
+        .nav-inner { max-width: 1200px; width: 100%; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-size: 20px; font-weight: 700; color: #1d1d1f; }
+        .nav-logo span { color: #0071e3; }
+        .nav-links { display: flex; gap: 36px; list-style: none; }
+        .nav-links a { font-size: 14px; font-weight: 500; color: #1d1d1f; opacity: 0.8; transition: opacity 0.2s; }
+        .nav-links a:hover { opacity: 1; }
+        .nav-links a.active { opacity: 1; color: #0071e3; }
+        
+        .breadcrumb {
+            padding: 72px 40px 20px;
+            max-width: 800px; margin: 0 auto;
+            font-size: 14px; color: #86868b;
+        }
+        .breadcrumb a { color: #0071e3; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        
+        .page-header {
+            padding: 20px 40px 60px;
+            max-width: 800px; margin: 0 auto;
+        }
+        .page-header h1 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 700; letter-spacing: -2px;
+            margin-bottom: 16px;
+        }
+        .page-header p {
+            font-size: 19px; color: #86868b;
+            line-height: 1.5;
+        }
+        
+        .article-content {
+            max-width: 800px; margin: 0 auto;
+            padding: 0 40px 100px;
+        }
+        
+        .guide-section {
+            margin-bottom: 60px;
+        }
+        
+        .guide-section h2 {
+            font-size: 28px; font-weight: 600;
+            margin-bottom: 20px; color: #1d1d1f;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #0071e3;
+            display: inline-block;
+        }
+        
+        .guide-section h3 {
+            font-size: 22px; font-weight: 600;
+            margin: 24px 0 12px; color: #1d1d1f;
+        }
+        
+        .guide-section p {
+            font-size: 17px; line-height: 1.8;
+            color: #333; margin-bottom: 16px;
+        }
+        
+        .param-card {
+            background: #f5f5f7;
+            border-radius: 16px;
+            padding: 28px;
+            margin: 20px 0;
+        }
+        
+        .param-card h4 {
+            font-size: 18px; font-weight: 600;
+            color: #0071e3; margin-bottom: 12px;
+        }
+        
+        .param-card p {
+            font-size: 15px; color: #6e6e73;
+            line-height: 1.6;
+        }
+        
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+        
+        .compare-table th {
+            background: #1d1d1f;
+            color: #fff;
+            padding: 16px 20px;
+            text-align: left;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        
+        .compare-table td {
+            padding: 14px 20px;
+            border-bottom: 1px solid #f0f0f2;
+            font-size: 15px;
+            color: #333;
+        }
+        
+        .compare-table tr:nth-child(even) {
+            background: #fbfbfd;
+        }
+        
+        .compare-table .highlight {
+            color: #0071e3;
+            font-weight: 600;
+        }
+        
+        .tip-box {
+            background: linear-gradient(135deg, #e8f4ff, #f0f8ff);
+            border-left: 4px solid #0071e3;
+            border-radius: 0 12px 12px 0;
+            padding: 20px 24px;
+            margin: 24px 0;
+        }
+        
+        .tip-box h4 {
+            font-size: 16px; font-weight: 600;
+            color: #0071e3; margin-bottom: 8px;
+        }
+        
+        .tip-box p {
+            font-size: 15px; color: #333;
+            margin-bottom: 0;
+        }
+        
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 24px;
+            background: #f5f5f7; color: #1d1d1f;
+            border-radius: 980px; font-size: 15px; font-weight: 500;
+            transition: all 0.3s; cursor: pointer;
+            margin: 0 40px 40px; max-width: 800px;
+        }
+        .back-btn:hover { background: #e8e8ed; }
+        
+        footer {
+            background: #1d1d1f; color: #86868b;
+            padding: 48px 40px 32px;
+        }
+        .footer-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 20px;
+        }
+        .footer-links { display: flex; gap: 32px; list-style: none; }
+        .footer-links a { font-size: 13px; color: #86868b; transition: color 0.2s; }
+        .footer-links a:hover { color: #f5f5f7; }
+        .footer-copy { font-size: 13px; }
+        
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .breadcrumb, .page-header, .article-content { padding-left: 20px; padding-right: 20px; }
+            .compare-table { font-size: 13px; }
+            .compare-table th, .compare-table td { padding: 10px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo">极客<span>老刘</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="phone.html">手机选购</a></li>
+            <li><a href="laptop.html">电脑选购</a></li>
+            <li><a href="accessories.html">配件选购</a></li>
+            <li><a href="smart-home.html" class="active">智能家居</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="breadcrumb">
+    <a href="index.html">首页</a> &gt; <span>智能家居入门指南</span>
+</div>
+
+<div class="page-header">
+    <h1>🏠 智能家居入门指南</h1>
+    <p>智能音箱、扫地机器人、智能灯具……怎么搭建一个真正好用的智能家居？</p>
+</div>
+
+<a href="index.html" class="back-btn">← 返回首页</a>
+
+<div class="article-content">
+    
+    <div class="guide-section">
+        <h2>一、什么是智能家居？</h2>
+        <p>智能家居不是让你的家变得「高科技」，而是让生活更方便。比如：</p>
+        <ul style="font-size:17px; line-height:2; color:#333; margin-left:20px; margin-bottom:20px;">
+            <li>回家前自动开空调、开灯</li>
+            <li>说一句话就能关掉所有灯</li>
+            <li>出门后自动扫地、关窗帘</li>
+            <li>晚上起夜自动开小夜灯</li>
+        </ul>
+        
+        <div class="tip-box">
+            <h4>💡 核心理念</h4>
+            <p>智能家居的目的是「无感」——你不需要操作，它就自动帮你做好了。</p>
+        </div>
+    </div>
+    
+    <div class="guide-section">
+        <h2>二、智能家居平台</h2>
+        <p>选平台是第一步，决定了你以后买什么设备：</p>
+        
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th>平台</th>
+                    <th>优势</th>
+                    <th>劣势</th>
+                    <th>适合人群</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Apple HomeKit</td>
+                    <td>隐私好、体验统一</td>
+                    <td>设备少、价格贵</td>
+                    <td>苹果用户</td>
+                </tr>
+                <tr>
+                    <td>米家</td>
+                    <td>设备多、性价比高</td>
+                    <td>隐私一般</td>
+                    <td>安卓用户、预算有限</td>
+                </tr>
+                <tr>
+                    <td>华为鸿蒙</td>
+                    <td>生态好、联动强</td>
+                    <td>设备较少</td>
+                    <td>华为用户</td>
+                </tr>
+                <tr>
+                    <td>Google Home</td>
+                    <td>语音助手强</td>
+                    <td>国内不好用</td>
+                    <td>海外用户</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="tip-box">
+            <h4>关于 Matter 协议</h4>
+            <p>Matter 是新的统一标准，不同品牌的设备可以互相兼容。2026 年新设备基本都支持 Matter。</p>
+        </div>
+    </div>
+    
+    <div class="guide-section">
+        <h2>三、入门设备推荐</h2>
+        <p>刚开始不用买太多，先从这几个设备开始：</p>
+        
+        <h3>1. 智能音箱（控制中心）</h3>
+        
+        <div class="param-card">
+            <h4>作用</h4>
+            <p>
+                <strong>语音控制</strong> — 说「开灯」就能开灯<br>
+                <strong>音乐播放</strong> — 随时听歌、听新闻<br>
+                <strong>智能家居中枢</strong> — 连接所有设备
+            </p>
+        </div>
+        
+        <div class="param-card">
+            <h4>推荐</h4>
+            <p>
+                <strong>HomePod mini</strong> — 苹果用户首选，音质好<br>
+                <strong>小爱音箱 Pro</strong> — 米家生态，性价比高<br>
+                <strong>华为 Sound X</strong> — 鸿蒙生态，音质好
+            </p>
+        </div>
+        
+        <h3>2. 智能灯具（最常用）</h3>
+        
+        <div class="param-card">
+            <h4>类型</h4>
+            <p>
+                <strong>智能灯泡</strong> — 最便宜，直接换灯泡<br>
+                <strong>智能灯带</strong> — 氛围感强，适合装饰<br>
+                <strong>智能吸顶灯</strong> — 主灯，全屋照明
+            </p>
+        </div>
+        
+        <div class="tip-box">
+            <h4>选购建议</h4>
+            <p>买灯时注意看是否支持「调色温」——从暖黄光到冷白光，适应不同场景。</p>
+        </div>
+        
+        <h3>3. 智能插座（最便宜的入门）</h3>
+        
+        <div class="param-card">
+            <h4>用途</h4>
+            <p>
+                <strong>远程开关</strong> — 手机控制电器开关<br>
+                <strong>定时功能</strong> — 定时开热水器、空调<br>
+                <strong>电量统计</strong> — 看电器用了多少电
+            </p>
+        </div>
+        
+        <div class="tip-box">
+            <h4>入门神器</h4>
+            <p>智能插座是最便宜的智能家居设备，几十块钱就能让普通电器变「智能」。</p>
+        </div>
+    </div>
+    
+    <div class="guide-section">
+        <h2>四、进阶设备</h2>
+        
+        <h3>1. 扫地机器人</h3>
+        
+        <div class="param-card">
+            <h4>选购要点</h4>
+            <p>
+                <strong>导航方式</strong> — LiDAR 激光导航最精准<br>
+                <strong>吸力</strong> — 4000Pa 以上才够用<br>
+                <strong>自动集尘</strong> — 不用手动倒垃圾<br>
+                <strong>拖布自清洁</strong> — 不用手洗拖布
+            </p>
+        </div>
+        
+        <h3>2. 智能门锁</h3>
+        
+        <div class="param-card">
+            <h4>解锁方式</h4>
+            <p>
+                <strong>指纹</strong> — 最方便，推荐首选<br>
+                <strong>人脸识别</strong> — 高端，解放双手<br>
+                <strong>NFC</strong> — 刷卡开门<br>
+                <strong>密码</strong> — 应急使用
+            </p>
+        </div>
+        
+        <div class="tip-box">
+            <h4>安全提醒</h4>
+            <p>智能门锁一定要选大品牌，安全性有保障。不要贪便宜买杂牌。</p>
+        </div>
+        
+        <h3>3. 智能窗帘</h3>
+        
+        <div class="param-card">
+            <h4>好处</h4>
+            <p>
+                <strong>定时开合</strong> — 早上自动拉开，晚上自动关上<br>
+                <strong>语音控制</strong> — 说「关窗帘」就关上<br>
+                <strong>联动场景</strong> — 回家自动开窗帘、开灯
+            </p>
+        </div>
+    </div>
+    
+    <div class="guide-section">
+        <h2>五、搭建场景</h2>
+        <p>智能家居最强大的是「场景联动」：</p>
+        
+        <div class="param-card">
+            <h4>🌅 起床场景</h4>
+            <p>
+                早上 7:00 → 窗帘自动拉开 → 灯光渐亮 → 播报天气 → 热水器开始加热
+            </p>
+        </div>
+        
+        <div class="param-card">
+            <h4>🏠 回家场景</h4>
+            <p>
+                手机检测到回家 → 开空调 → 开灯 → 开窗帘 → 播放音乐
+            </p>
+        </div>
+        
+        <div class="param-card">
+            <h4>🌙 睡眠场景</h4>
+            <p>
+                说「晚安」→ 关所有灯 → 关窗帘 → 空调调到睡眠模式 → 门锁上锁
+            </p>
+        </div>
+        
+        <div class="param-card">
+            <h4>🚪 离家场景</h4>
+            <p>
+                出门 → 关所有灯 → 关空调 → 扫地机器人开始工作 → 摄像头开启监控
+            </p>
+        </div>
+    </div>
+    
+    <div class="guide-section">
+        <h2>六、常见问题</h2>
+        
+        <h3>❓ 智能家居会不会很贵？</h3>
+        <p>入门只要几百块：一个智能音箱 + 几个智能灯泡 + 几个智能插座。慢慢添加就行。</p>
+        
+        <h3>❓ 会不会很难设置？</h3>
+        <p>现在大部分设备都是「即插即用」，扫码就能连接。比以前简单多了。</p>
+        
+        <h3>❓ 网络断了还能用吗？</h3>
+        <p>大部分设备支持本地控制，断网也能用。只是不能远程控制和语音控制。</p>
+        
+        <h3>❓ 会不会泄露隐私？</h3>
+        <p>选大品牌、关闭不需要的权限、定期检查设备。隐私风险是有的，但可以控制。</p>
+    </div>
+    
+    <div class="guide-section">
+        <h2>七、总结</h2>
+        <p>智能家居不是一步到位的，而是慢慢添加的。先从最常用的设备开始，体验好了再扩展。</p>
+        
+        <div class="tip-box">
+            <h4>🎯 入门建议</h4>
+            <p>先买一个智能音箱 + 两个智能灯泡 + 一个智能插座，体验一下。觉得好用再继续添加。</p>
+        </div>
+    </div>
+    
+</div>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-copy">© 2026 极客老刘 Geek Lao Liu. All rights reserved.</div>
+        <ul class="footer-links">
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">联系方式</a></li>
+            <li><a href="#">隐私政策</a></li>
+        </ul>
+    </div>
+</footer>
+
+</body>
+</html>

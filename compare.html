@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品对比 - 极客老刘</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: #1d1d1f; background: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { text-decoration: none; color: inherit; }
+        
+        nav {
+            position: fixed; top: 0; width: 100%; height: 52px;
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center;
+            border-bottom: 0.5px solid rgba(0,0,0,0.08);
+        }
+        .nav-inner { max-width: 1200px; width: 100%; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-size: 20px; font-weight: 700; color: #1d1d1f; }
+        .nav-logo span { color: #0071e3; }
+        .nav-links { display: flex; gap: 36px; list-style: none; }
+        .nav-links a { font-size: 14px; font-weight: 500; color: #1d1d1f; opacity: 0.8; transition: opacity 0.2s; }
+        .nav-links a:hover { opacity: 1; }
+        
+        .page-header {
+            padding: 100px 40px 40px;
+            max-width: 1200px; margin: 0 auto;
+            text-align: center;
+        }
+        .page-header h1 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 700; letter-spacing: -2px;
+            margin-bottom: 16px;
+        }
+        .page-header p {
+            font-size: 19px; color: #86868b;
+            max-width: 600px; margin: 0 auto; line-height: 1.5;
+        }
+        
+        /* 分类选择器 */
+        .category-selector {
+            display: flex; justify-content: center; gap: 10px;
+            padding: 0 40px 32px;
+            max-width: 1200px; margin: 0 auto;
+            flex-wrap: wrap;
+        }
+        .category-btn {
+            padding: 10px 24px;
+            background: #f5f5f7; border: 2px solid #e0e0e2;
+            border-radius: 12px;
+            font-size: 15px; font-weight: 500;
+            color: #6e6e73; cursor: pointer;
+            transition: all 0.3s;
+        }
+        .category-btn:hover { background: #e8e8ed; color: #1d1d1f; }
+        .category-btn.active {
+            background: #1d1d1f; color: #fff;
+            border-color: #1d1d1f;
+        }
+        
+        .compare-container {
+            max-width: 1200px; margin: 0 auto;
+            padding: 0 40px 100px;
+        }
+        
+        /* 产品选择器 */
+        .product-selector {
+            display: flex; gap: 16px; align-items: center;
+            margin-bottom: 28px; flex-wrap: wrap;
+        }
+        .product-selector .vs {
+            font-size: 20px; font-weight: 300; color: #86868b;
+        }
+        .product-select {
+            flex: 1; min-width: 200px;
+            padding: 14px 18px;
+            border: 2px solid #e0e0e2;
+            border-radius: 12px;
+            font-size: 15px; font-weight: 500;
+            background: #fff; color: #1d1d1f;
+            cursor: pointer; transition: border-color 0.3s;
+            appearance: none; -webkit-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="%236e6e73"><path d="M6 8L1 3h10z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+        }
+        .product-select:focus { outline: none; border-color: #0071e3; }
+        
+        /* 对比表格 */
+        .compare-table {
+            width: 100%; border-collapse: collapse;
+            border-radius: 20px; overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+        }
+        .compare-table thead th {
+            background: #1d1d1f; color: #fff;
+            padding: 20px 24px; text-align: center;
+            font-size: 17px; font-weight: 600;
+        }
+        .compare-table thead th:first-child {
+            text-align: left; width: 160px;
+        }
+        .compare-table tbody td {
+            padding: 15px 24px;
+            border-bottom: 1px solid #f0f0f2;
+            font-size: 15px; color: #333;
+            text-align: center;
+        }
+        .compare-table tbody td:first-child {
+            text-align: left; font-weight: 600;
+            color: #1d1d1f; background: #fbfbfd;
+        }
+        .compare-table tbody tr:hover { background: #f8f8fa; }
+        .compare-table .highlight { color: #0071e3; font-weight: 600; }
+        .compare-table .best { background: #e8f4ff; }
+        .compare-table .price-row td { background: #f0f7ff !important; font-weight: 600; font-size: 16px; }
+        .compare-table .price-row td:first-child { background: #e0efff !important; }
+        
+        /* 结论卡片 */
+        .conclusion-card {
+            background: #f5f5f7; border-radius: 20px;
+            padding: 32px; margin-top: 40px;
+        }
+        .conclusion-card h3 {
+            font-size: 22px; font-weight: 600;
+            margin-bottom: 20px; color: #1d1d1f;
+        }
+        .conclusion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .conclusion-item {
+            background: #fff; border-radius: 12px;
+            padding: 20px; border: 1px solid rgba(0,0,0,0.04);
+        }
+        .conclusion-item h4 {
+            font-size: 16px; font-weight: 600;
+            color: #0071e3; margin-bottom: 8px;
+        }
+        .conclusion-item p {
+            font-size: 14px; color: #6e6e73; line-height: 1.6;
+        }
+        
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 24px;
+            background: #f5f5f7; color: #1d1d1f;
+            border-radius: 980px; font-size: 15px; font-weight: 500;
+            transition: all 0.3s; cursor: pointer;
+            margin: 0 40px 40px;
+        }
+        .back-btn:hover { background: #e8e8ed; }
+        
+        footer {
+            background: #1d1d1f; color: #86868b;
+            padding: 48px 40px 32px;
+        }
+        .footer-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 20px;
+        }
+        .footer-links { display: flex; gap: 32px; list-style: none; }
+        .footer-links a { font-size: 13px; color: #86868b; transition: color 0.2s; }
+        .footer-links a:hover { color: #f5f5f7; }
+        .footer-copy { font-size: 13px; }
+        
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .page-header, .compare-container, .category-selector { padding-left: 20px; padding-right: 20px; }
+            .compare-table { font-size: 13px; }
+            .compare-table thead th, .compare-table tbody td { padding: 12px 14px; }
+            .product-selector { flex-direction: column; }
+            .product-selector .vs { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo">极客<span>老刘</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="phone.html">手机选购</a></li>
+            <li><a href="laptop.html">电脑选购</a></li>
+            <li><a href="accessories.html">配件选购</a></li>
+            <li><a href="smart-home.html">智能家居</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="page-header">
+    <h1>产品对比</h1>
+    <p>参数说话，帮你快速做决定。选择两款产品，查看详细对比。</p>
+</div>
+<div class="category-selector" id="catSelector"></div>
+<a href="index.html" class="back-btn">← 返回首页</a>
+<div class="compare-container" id="compareContainer"></div>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-copy">© 2026 极客老刘 Geek Lao Liu. All rights reserved.</div>
+        <ul class="footer-links">
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">联系方式</a></li>
+            <li><a href="#">隐私政策</a></li>
+        </ul>
+    </div>
+</footer>
+
+<script src="data.js"></script>
+<script>
+// ========== 产品数据库 ==========
+// ========== 当前状态 ==========
+let currentCat = 'phone';
+let selectedA = {};
+let selectedB = {};
+
+// ========== 初始化 ==========
+function init() {
+    renderCategoryButtons();
+    // 读取URL参数，支持从主页跳转时保持分类
+    const urlCat = new URLSearchParams(window.location.search).get('cat');
+    const validCats = Object.keys(PRODUCTS);
+    selectCategory(urlCat && validCats.includes(urlCat) ? urlCat : 'phone');
+}
+
+function renderCategoryButtons() {
+    const container = document.getElementById('catSelector');
+    container.innerHTML = Object.entries(PRODUCTS).map(([key, cat], i) =>
+        `<button class="category-btn${i===0?' active':''}" onclick="selectCategory('${key}')">${cat.label}</button>`
+    ).join('');
+}
+
+function selectCategory(cat) {
+    currentCat = cat;
+    // 更新按钮状态
+    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.category-btn').forEach(btn => {
+        if (btn.textContent === PRODUCTS[cat].label) btn.classList.add('active');
+    });
+    // 默认选前两个
+    const names = Object.keys(PRODUCTS[cat].products);
+    selectedA[cat] = names[0];
+    selectedB[cat] = names[1];
+    renderCompare();
+}
+
+function renderCompare() {
+    const cat = PRODUCTS[currentCat];
+    const names = Object.keys(cat.products);
+    const container = document.getElementById('compareContainer');
+
+    let html = `<div class="product-selector">
+        <select class="product-select" id="selA" onchange="onSelectChange()">
+            ${names.map(n => `<option value="${n}"${n===selectedA[currentCat]?' selected':''}>${n}</option>`).join('')}
+        </select>
+        <span class="vs">VS</span>
+        <select class="product-select" id="selB" onchange="onSelectChange()">
+            ${names.map(n => `<option value="${n}"${n===selectedB[currentCat]?' selected':''}>${n}</option>`).join('')}
+        </select>
+    </div>`;
+
+    const devA = cat.products[selectedA[currentCat]];
+    const devB = cat.products[selectedB[currentCat]];
+    const nameA = selectedA[currentCat];
+    const nameB = selectedB[currentCat];
+
+    html += `<table class="compare-table"><thead><tr><th>参数</th><th>${nameA}</th><th>${nameB}</th></tr></thead><tbody>`;
+
+    // 普通参数行（不含起售价）
+    const normalParams = cat.params.filter(p => p[1] !== 'price');
+    normalParams.forEach(([label, key]) => {
+        const va = devA[key] || '-';
+        const vb = devB[key] || '-';
+        html += `<tr><td>${label}</td><td>${va}</td><td>${vb}</td></tr>`;
+    });
+
+    // 起售价放最后
+    const priceA = devA.price || '-';
+    const priceB = devB.price || '-';
+    html += `<tr class="price-row"><td>起售价</td><td>${priceA}</td><td>${priceB}</td></tr>`;
+
+    html += `</tbody></table>`;
+
+    // 选购建议
+    html += `<div class="conclusion-card"><h3>选购建议</h3><div class="conclusion-grid">`;
+    html += `<div class="conclusion-item"><h4>选 ${nameA} 如果...</h4><p>${cat.verdicts[nameA] || '适合追求均衡体验的用户。'}</p></div>`;
+    html += `<div class="conclusion-item"><h4>选 ${nameB} 如果...</h4><p>${cat.verdicts[nameB] || '适合追求性价比的用户。'}</p></div>`;
+    html += `</div></div>`;
+
+    container.innerHTML = html;
+}
+
+function onSelectChange() {
+    selectedA[currentCat] = document.getElementById('selA').value;
+    selectedB[currentCat] = document.getElementById('selB').value;
+    renderCompare();
+}
+
+init();
+</script>
+
+</body>
+</html>

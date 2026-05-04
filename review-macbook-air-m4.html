@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MacBook Air M4 实测 - 极客老刘</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: #1d1d1f; background: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { text-decoration: none; color: inherit; }
+        
+        nav {
+            position: fixed; top: 0; width: 100%; height: 52px;
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center;
+            border-bottom: 0.5px solid rgba(0,0,0,0.08);
+        }
+        .nav-inner { max-width: 1200px; width: 100%; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-size: 20px; font-weight: 700; color: #1d1d1f; }
+        .nav-logo span { color: #0071e3; }
+        .nav-links { display: flex; gap: 36px; list-style: none; }
+        .nav-links a { font-size: 14px; font-weight: 500; color: #1d1d1f; opacity: 0.8; transition: opacity 0.2s; }
+        .nav-links a:hover { opacity: 1; }
+        
+        .article-hero {
+            padding: 100px 40px 60px;
+            background: linear-gradient(135deg, #2d1b69, #11998e);
+            color: #fff;
+            text-align: center;
+        }
+        .article-hero h1 {
+            font-size: clamp(32px, 5vw, 52px);
+            font-weight: 700; letter-spacing: -1.5px;
+            margin-bottom: 20px; max-width: 800px; margin: 0 auto 20px;
+        }
+        .article-meta {
+            display: flex; justify-content: center; gap: 24px;
+            font-size: 15px; color: rgba(255,255,255,0.7);
+            margin-bottom: 20px;
+        }
+        .article-tag {
+            display: inline-block; padding: 6px 16px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 980px; font-size: 14px;
+        }
+        
+        .article-content {
+            max-width: 800px; margin: 0 auto;
+            padding: 60px 40px 100px;
+        }
+        
+        .article-content h2 {
+            font-size: 28px; font-weight: 600;
+            margin: 48px 0 20px; color: #1d1d1f;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #0071e3;
+            display: inline-block;
+        }
+        
+        .article-content h3 {
+            font-size: 22px; font-weight: 600;
+            margin: 32px 0 16px; color: #1d1d1f;
+        }
+        
+        .article-content p {
+            font-size: 18px; line-height: 1.9;
+            color: #333; margin-bottom: 20px;
+        }
+        
+        .score-card {
+            background: #f5f5f7;
+            border-radius: 20px;
+            padding: 32px;
+            margin: 32px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 24px;
+            text-align: center;
+        }
+        .score-item { padding: 16px; }
+        .score-value {
+            font-size: 48px; font-weight: 700;
+            color: #0071e3; margin-bottom: 8px;
+        }
+        .score-label { font-size: 14px; color: #86868b; }
+        
+        .spec-card {
+            background: #fbfbfd;
+            border-radius: 16px;
+            padding: 28px;
+            margin: 24px 0;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+        .spec-card h4 {
+            font-size: 18px; font-weight: 600;
+            color: #0071e3; margin-bottom: 16px;
+        }
+        .spec-list {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .spec-item {
+            display: flex; justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f2;
+            font-size: 15px;
+        }
+        .spec-item .label { color: #86868b; }
+        .spec-item .value { font-weight: 500; }
+        
+        .pros-cons {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 24px; margin: 32px 0;
+        }
+        .pros, .cons {
+            padding: 24px; border-radius: 16px;
+        }
+        .pros { background: #f0fff4; border: 1px solid #c6f6d5; }
+        .cons { background: #fff5f5; border: 1px solid #fed7d7; }
+        .pros h4, .cons h4 {
+            font-size: 18px; font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .pros h4 { color: #38a169; }
+        .cons h4 { color: #e53e3e; }
+        .pros li, .cons li {
+            font-size: 15px; line-height: 1.8;
+            margin-left: 16px; margin-bottom: 8px;
+        }
+        
+        .image-placeholder {
+            background: linear-gradient(135deg, #f5f5f7, #e8e8ed);
+            border-radius: 16px;
+            padding: 60px;
+            text-align: center;
+            margin: 32px 0;
+            font-size: 80px;
+        }
+        
+        .summary-box {
+            background: linear-gradient(135deg, #e8f4ff, #f0f8ff);
+            border-radius: 20px;
+            padding: 32px;
+            margin: 40px 0;
+        }
+        .summary-box h3 {
+            font-size: 24px; font-weight: 600;
+            color: #0071e3; margin-bottom: 16px;
+        }
+        .summary-box p {
+            font-size: 17px; line-height: 1.8;
+            color: #333; margin-bottom: 0;
+        }
+        
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 24px;
+            background: #f5f5f7; color: #1d1d1f;
+            border-radius: 980px; font-size: 15px; font-weight: 500;
+            transition: all 0.3s; cursor: pointer;
+            margin: 40px 40px 40px; max-width: 800px;
+        }
+        .back-btn:hover { background: #e8e8ed; }
+        
+        footer {
+            background: #1d1d1f; color: #86868b;
+            padding: 48px 40px 32px;
+        }
+        .footer-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 20px;
+        }
+        .footer-links { display: flex; gap: 32px; list-style: none; }
+        .footer-links a { font-size: 13px; color: #86868b; transition: color 0.2s; }
+        .footer-links a:hover { color: #f5f5f7; }
+        .footer-copy { font-size: 13px; }
+        
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .article-hero { padding: 80px 20px 40px; }
+            .article-content { padding: 40px 20px 80px; }
+            .pros-cons { grid-template-columns: 1fr; }
+            .spec-list { grid-template-columns: 1fr; }
+            .score-card { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo">极客<span>老刘</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">首页</a></li>
+            <li><a href="phone.html">手机选购</a></li>
+            <li><a href="laptop.html">电脑选购</a></li>
+            <li><a href="accessories.html">配件选购</a></li>
+            <li><a href="smart-home.html">智能家居</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="article-hero">
+    <span class="article-tag">💻 深度评测</span>
+    <h1>MacBook Air M4 实测：轻薄本天花板又抬高了</h1>
+    <div class="article-meta">
+        <span>2026年4月28日</span>
+        <span>阅读 12 分钟</span>
+        <span>作者：极客老刘</span>
+    </div>
+</div>
+
+<a href="index.html" class="back-btn">← 返回首页</a>
+
+<div class="article-content">
+    
+    <p>MacBook Air 一直是轻薄本的标杆产品。这次 M4 芯片的加入，让它的性能和续航都有了明显提升。用了两周，来说说真实感受。</p>
+    
+    <div class="score-card">
+        <div class="score-item">
+            <div class="score-value">9.4</div>
+            <div class="score-label">综合评分</div>
+        </div>
+        <div class="score-item">
+            <div class="score-value">9.6</div>
+            <div class="score-label">续航能力</div>
+        </div>
+        <div class="score-item">
+            <div class="score-value">9.0</div>
+            <div class="score-label">性能表现</div>
+        </div>
+        <div class="score-item">
+            <div class="score-value">9.2</div>
+            <div class="score-label">便携性</div>
+        </div>
+    </div>
+    
+    <h2>一、外观设计</h2>
+    
+    <div class="image-placeholder">💻</div>
+    
+    <p>外观几乎没有变化，还是那个经典的楔形设计。但这也是它的优势——轻薄、便携、好看。13.6 英寸版本只有 1.24kg，15.3 英寸版本 1.51kg。</p>
+    
+    <p>这次新增了一个颜色：午夜蓝。比之前的午夜色更深邃，质感更好。其他颜色还是星光色、深空灰、银色。</p>
+    
+    <div class="spec-card">
+        <h4>外观参数</h4>
+        <div class="spec-list">
+            <div class="spec-item">
+                <span class="label">13.6 英寸</span>
+                <span class="value">30.41 x 21.5 x 1.13 cm</span>
+            </div>
+            <div class="spec-item">
+                <span class="label">15.3 英寸</span>
+                <span class="value">34.04 x 23.76 x 1.15 cm</span>
+            </div>
+            <div class="spec-item">
+                <span class="label">重量（13寸）</span>
+                <span class="value">1.24kg</span>
+            </div>
+            <div class="spec-item">
+                <span class="label">重量（15寸）</span>
+                <span class="value">1.51kg</span>
+            </div>
+        </div>
+    </div>
+    
+    <h2>二、屏幕表现</h2>
+    
+    <p>Liquid Retina 显示屏，支持 P3 广色域和原彩显示。亮度最高 500nit，户外使用没问题。</p>
+    
+    <p>这次加入了「室外模式」，亮度可以临时提升到 600nit，在强烈阳光下看屏幕更清楚。不过只支持几分钟，之后会自动降回 500nit。</p>
+    
+    <h2>三、M4 芯片性能</h2>
+    
+    <p>M4 芯片采用第二代 3nm 工艺，10 核 CPU + 10 核 GPU。相比 M3，CPU 性能提升 25%，GPU 性能提升 20%。</p>
+    
+    <h3>跑分测试</h3>
+    
+    <div class="spec-card">
+        <h4>性能跑分</h4>
+        <div class="spec-list">
+            <div class="spec-item">
+                <span class="label">GeekBench 单核</span>
+                <span class="value">3800+</span>
+            </div>
+            <div class="spec-item">
+                <span class="label">GeekBench 多核</span>
+                <span class="value">15000+</span>
+            </div>
+            <div class="spec-item">
+                <span class="label">Cinebench R23</span>
+                <span class="value">16500+</span>
+            </div>
+            <div class="spec-item">
+                <span class="label">GPU 跑分</span>
+                <span class="value">55000+</span>
+            </div>
+        </div>
+    </div>
+    
+    <h3>实际使用</h3>
+    
+    <p>日常办公完全没压力，几十个 Chrome 标签页 + Word + Excel + 微信，切换流畅不卡顿。</p>
+    
+    <p>视频剪辑也能胜任，4K 视频剪辑流畅，导出速度比 M3 快 20% 左右。如果是 8K 视频或者复杂的特效，还是建议上 MacBook Pro。</p>
+    
+    <p>游戏方面，支持的游戏越来越多了。《博德之门 3》《生化危机 4》都能流畅运行，但帧率不如游戏本。</p>
+    
+    <h2>四、续航能力</h2>
+    
+    <p>这是 MacBook Air 最强的地方。官方标称 18 小时视频播放，实际使用：</p>
+    
+    <ul style="font-size:17px; line-height:2; color:#333; margin-left:20px; margin-bottom:20px;">
+        <li>轻度办公（文档、网页、邮件）：12-14 小时</li>
+        <li>中度使用（加视频、图片处理）：8-10 小时</li>
+        <li>重度使用（视频剪辑、编译代码）：5-6 小时</li>
+    </ul>
+    
+    <p>这个续航能力，在轻薄本里是顶级的。出差一天不用带充电器，很有安全感。</p>
+    
+    <h2>五、接口和连接</h2>
+    
+    <p>接口还是两个 Thunderbolt 4 + MagSafe 充电口 + 3.5mm 耳机孔。这次升级支持 Wi-Fi 7，速度更快、延迟更低。</p>
+    
+    <div class="spec-card">
+        <h4>接口参数</h4>
+        <div class="spec-list">
+            <div class="spec-item">
+                <span class="label">Thunderbolt</span>
+                <span class="value">2 x USB-C (40Gbps)</span>
+            </div>
+            <div class="spec-item">
+                <span class="label">充电</span>
+                <span class="value">MagSafe 3</span>
+            </div>
+            <div class="spec-item">
+                <span class="label">耳机</span>
+                <span class="value">3.5mm</span>
+            </div>
+            <div class="spec-item">
+                <span class="label">Wi-Fi</span>
+                <span class="value">Wi-Fi 7</span>
+            </div>
+        </div>
+    </div>
+    
+    <h2>六、键盘和触控板</h2>
+    
+    <p>键盘手感和上一代一样，键程适中，打字舒服。触控板还是那么大，手势操作流畅。</p>
+    
+    <p>这次加入了「触觉反馈」功能，打字时会有轻微的震动反馈。可以在设置里关闭，但我觉得开着体验更好。</p>
+    
+    <h2>七、优缺点总结</h2>
+    
+    <div class="pros-cons">
+        <div class="pros">
+            <h4>✅ 优点</h4>
+            <ul>
+                <li>M4 性能提升明显，能效比更好</li>
+                <li>续航能力顶级，一天不用充电</li>
+                <li>轻薄便携，做工精致</li>
+                <li>屏幕素质好，色彩准确</li>
+                <li>macOS 系统流畅稳定</li>
+            </ul>
+        </div>
+        <div class="cons">
+            <h4>❌ 缺点</h4>
+            <ul>
+                <li>接口太少，需要扩展坞</li>
+                <li>屏幕刷新率只有 60Hz</li>
+                <li>内存最高只支持 24GB</li>
+                <li>价格偏高</li>
+            </ul>
+        </div>
+    </div>
+    
+    <h2>八、购买建议</h2>
+    
+    <p>如果你是学生、办公族、经常出差，MacBook Air M4 是最好的选择之一。续航长、性能够用、轻薄便携。</p>
+    
+    <p>如果你是程序员、设计师、视频创作者，建议考虑 MacBook Pro M4 Pro。性能更强，接口更多，屏幕更好。</p>
+    
+    <div class="summary-box">
+        <h3>🎯 最终结论</h3>
+        <p>MacBook Air M4 是一台完美的轻薄本。性能足够日常使用，续航顶级，做工精致。如果你需要一台便携、好用、续航长的笔记本，它就是目前最好的选择。轻薄本的天花板，又被苹果抬高了。</p>
+    </div>
+    
+</div>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-copy">© 2026 极客老刘 Geek Lao Liu. All rights reserved.</div>
+        <ul class="footer-links">
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">联系方式</a></li>
+            <li><a href="#">隐私政策</a></li>
+        </ul>
+    </div>
+</footer>
+
+</body>
+</html>
